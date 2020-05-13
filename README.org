@@ -1,0 +1,5 @@
+Guix - For NixOS
+-----
+
+Notes:
+*** This is a Nix Flake
