@@ -29,5 +29,7 @@ let
       guile-sqlite3 = callPackage ./guile-sqlite3 { };
 
       guile-ssh = callPackage ./guile-ssh { };
+
+      guile-zlib = callPackage ./guile-zlib { };
     };
 in lib.fix' (lib.extends overrides packages)

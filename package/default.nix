@@ -23,6 +23,7 @@ stdenv.mkDerivation rec {
       guile-sqlite3
       guile-ssh
       guile-gnutls
+      guile-zlib
       bytestructures
     ] (m: (m.override { inherit guile; }).out);
 
