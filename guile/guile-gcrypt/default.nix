@@ -1,6 +1,4 @@
-{ stdenv, fetchurl, guile, libgcrypt
-, autoreconfHook, pkgconfig, texinfo
-}:
+{ stdenv, fetchurl, guile, libgcrypt, autoreconfHook, pkgconfig, texinfo }:
 
 stdenv.mkDerivation rec {
   pname = "guile-gcrypt";

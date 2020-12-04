@@ -1,4 +1,4 @@
-{ config, pkgs, lib, ...}:
+{ config, pkgs, lib, ... }:
 
 let
   cfg = config.services.guix;
@@ -12,11 +12,10 @@ let
   };
 
   guixBuildUsers = numberOfUsers:
-    builtins.listToAttrs
-      (map (user: {
-        name = user.name;
-        value = user;
-      }) (builtins.genList guixBuildUser numberOfUsers));
+    builtins.listToAttrs (map (user: {
+      name = user.name;
+      value = user;
+    }) (builtins.genList guixBuildUser numberOfUsers));
 
   guixEnv = {
     GUIX_STATE_DIRECTORY = "/gnu/var";
@@ -27,7 +26,7 @@ let
 
   guixWrapped = pkgs.writeShellScriptBin "guix" ''
     ${lib.concatStringsSep "\n"
-      (lib.mapAttrsToList (k: v: "export ${k}=${v}") guixEnv)}
+    (lib.mapAttrsToList (k: v: "export ${k}=${v}") guixEnv)}
     exec ${cfg.package}/bin/guix $@
   '';
 in {
@@ -54,7 +53,7 @@ in {
 
     extraArgs = mkOption {
       type = with types; listOf str;
-      default = [];
+      default = [ ];
       example = [ "--max-jobs=4" "--debug" ];
       description = ''
         Extra flags to pass to the guix daemon.
@@ -92,12 +91,10 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    environment.systemPackages = [
-      guixWrapped (lib.lowPrio guixWrapped)
-    ];
+    environment.systemPackages = [ guixWrapped (lib.lowPrio guixWrapped) ];
 
     users.users = guixBuildUsers 10;
-    users.groups = { "${cfg.group}" = {}; };
+    users.groups = { "${cfg.group}" = { }; };
 
     systemd.services.guix-daemon = {
       description = "Build daemon for GNU Guix";
@@ -107,7 +104,7 @@ in {
           ${cfg.package}/share/guix/ci.guix.gnu.org.pub
 
         ${lib.concatStringsSep "\n"
-          (lib.mapAttrsToList (k: v: "export ${k}=${v}") guixEnv)}
+        (lib.mapAttrsToList (k: v: "export ${k}=${v}") guixEnv)}
         ROOT_PROFILE=$GUIX_STATE_DIRECTORY"/profiles/per-user/root/current-guix"
 
         DAEMON=$ROOT_PROFILE"/bin/guix-daemon"
@@ -117,7 +114,9 @@ in {
           export GUIX_LOCPATH="${pkgs.glibcLocales}/lib/locale"
         fi
 
-        exec $DAEMON --build-users-group=${cfg.group} ${lib.concatStringsSep " " cfg.extraArgs}
+        exec $DAEMON --build-users-group=${cfg.group} ${
+          lib.concatStringsSep " " cfg.extraArgs
+        }
       '';
       serviceConfig = {
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /gnu/store";
@@ -125,7 +124,8 @@ in {
         RemainAfterExit = "yes";
         StandardOutput = "syslog";
         StandardError = "syslog";
-        TasksMax = 8192; # See <https://lists.gnu.org/archive/html/guix-devel/2016-04/msg00608.html>.
+        TasksMax =
+          8192; # See <https://lists.gnu.org/archive/html/guix-devel/2016-04/msg00608.html>.
       };
       wantedBy = [ "multi-user.target" ];
     };
@@ -138,7 +138,7 @@ in {
           ${cfg.package}/share/guix/ci.guix.gnu.org.pub
 
         ${lib.concatStringsSep "\n"
-          (lib.mapAttrsToList (k: v: "export ${k}=${v}") guixEnv)}
+        (lib.mapAttrsToList (k: v: "export ${k}=${v}") guixEnv)}
         ROOT_PROFILE=$GUIX_STATE_DIRECTORY"/profiles/per-user/root/current-guix"
 
         DAEMON=$ROOT_PROFILE"/bin/guix"
@@ -156,7 +156,8 @@ in {
         RemainAfterExit = "yes";
         StandardOutput = "syslog";
         StandardError = "syslog";
-        TasksMax = 1024; # See <https://lists.gnu.org/archive/html/guix-devel/2016-04/msg00608.html>.
+        TasksMax =
+          1024; # See <https://lists.gnu.org/archive/html/guix-devel/2016-04/msg00608.html>.
       };
       wantedBy = [ "multi-user.target" ];
     };

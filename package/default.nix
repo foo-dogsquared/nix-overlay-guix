@@ -1,5 +1,5 @@
-{ stdenv, pkgs, lib, fetchurl, pkg-config, makeWrapper, zlib, bzip2
-, guile, guilePackages, storeDir ? null, stateDir ? null }:
+{ stdenv, pkgs, lib, fetchurl, pkg-config, makeWrapper, zlib, bzip2, guile
+, guilePackages, storeDir ? null, stateDir ? null }:
 
 stdenv.mkDerivation rec {
   pname = "guix";
@@ -15,9 +15,16 @@ stdenv.mkDerivation rec {
     sed -i '/guileobjectdir\s*=/s%=.*%=''${out}/share/guile/ccache%' Makefile;
   '';
 
-  modules = with guilePackages; lib.forEach [
-    guile-gcrypt guile-git guile-json guile-sqlite3 guile-ssh guile-gnutls bytestructures
-  ] (m: (m.override { inherit guile; }).out);
+  modules = with guilePackages;
+    lib.forEach [
+      guile-gcrypt
+      guile-git
+      guile-json
+      guile-sqlite3
+      guile-ssh
+      guile-gnutls
+      bytestructures
+    ] (m: (m.override { inherit guile; }).out);
 
   nativeBuildInputs = [ pkg-config makeWrapper ];
   buildInputs = [ zlib bzip2 ] ++ modules;
@@ -27,20 +34,16 @@ stdenv.mkDerivation rec {
     guilePath = [
       "\${out}/share/guile/site"
       "${guilePackages.guile-gnutls.out}/lib/guile/extensions"
-    ] ++ (lib.concatMap (module: [
-      "${module}/share/guile/site"
-    ]) modules);
+    ] ++ (lib.concatMap (module: [ "${module}/share/guile/site" ]) modules);
   in "${lib.concatStringsSep ":" guilePath}";
   GUILE_LOAD_COMPILED_PATH = let
     guilePath = [
       "\${out}/share/guile/ccache"
       "${guilePackages.guile-gnutls.out}/lib/guile/extensions"
-    ] ++ (lib.concatMap (module: [
-      "${module}/share/guile/ccache"
-    ]) modules);
+    ] ++ (lib.concatMap (module: [ "${module}/share/guile/ccache" ]) modules);
   in "${lib.concatStringsSep ":" guilePath}";
 
-  configureFlags = []
+  configureFlags = [ ]
     ++ lib.optional (storeDir != null) "--with-store-dir=${storeDir}"
     ++ lib.optional (stateDir != null) "--localstatedir=${stateDir}";
 
@@ -54,12 +57,11 @@ stdenv.mkDerivation rec {
       --prefix GUILE_LOAD_COMPILED_PATH : "${GUILE_LOAD_COMPILED_PATH}"
   '';
 
-  passthru = {
-    inherit guile;
-  };
+  passthru = { inherit guile; };
 
   meta = with lib; {
-    description = "A transactional package manager for an advanced distribution of the GNU system";
+    description =
+      "A transactional package manager for an advanced distribution of the GNU system";
     homepage = "https://guix.gnu.org/";
     license = licenses.gpl3;
     maintainers = with maintainers; [ bqv ];

@@ -1,6 +1,5 @@
-{ stdenv, fetchFromGitLab, guile, libgit2, bytestructures
-, autoreconfHook, pkg-config, texinfo
-}:
+{ stdenv, fetchFromGitLab, guile, libgit2, bytestructures, autoreconfHook
+, pkg-config, texinfo }:
 
 stdenv.mkDerivation rec {
   pname = "guile-git";

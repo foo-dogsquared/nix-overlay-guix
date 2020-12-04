@@ -1,13 +1,12 @@
-{ stdenv, fetchurl, guile, sqlite
-, autoreconfHook, pkg-config, texinfo
-}:
+{ stdenv, fetchurl, guile, sqlite, autoreconfHook, pkg-config, texinfo }:
 
 stdenv.mkDerivation rec {
   pname = "guile-sqlite3";
   version = "0.1.0";
 
   src = fetchurl {
-    url = "https://notabug.org/guile-sqlite3/${pname}/archive/v${version}.tar.gz";
+    url =
+      "https://notabug.org/guile-sqlite3/${pname}/archive/v${version}.tar.gz";
     sha256 = "1s9gmj72vszn999c82vnq0vic7ly4wcg8lz1qcfmhgk9pihcs0bm";
   };
 

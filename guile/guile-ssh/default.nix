@@ -1,6 +1,5 @@
-{ stdenv, fetchFromGitHub, guile, libssh
-, autoreconfHook, pkg-config, texinfo, which
-}:
+{ stdenv, fetchFromGitHub, guile, libssh, autoreconfHook, pkg-config, texinfo
+, which }:
 
 stdenv.mkDerivation rec {
   pname = "guile-ssh";
