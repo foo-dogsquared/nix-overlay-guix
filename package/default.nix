@@ -20,6 +20,7 @@ stdenv.mkDerivation rec {
       guile-gcrypt
       guile-git
       guile-json
+      guile-lzlib
       guile-sqlite3
       guile-ssh
       guile-gnutls

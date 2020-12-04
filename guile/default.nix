@@ -28,6 +28,8 @@ let
 
       guile-json = callPackage ./guile-json { };
 
+      guile-lzlib = callPackage ./guile-lzlib { };
+
       guile-sqlite3 = callPackage ./guile-sqlite3 { };
 
       guile-ssh = callPackage ./guile-ssh { };
