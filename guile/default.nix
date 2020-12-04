@@ -22,6 +22,8 @@ let
 
       bytestructures = callPackage ./bytestructures { };
 
+      lzlib = callPackage ./lzlib { };
+
       guile-git = callPackage ./guile-git { };
 
       guile-json = callPackage ./guile-json { };
