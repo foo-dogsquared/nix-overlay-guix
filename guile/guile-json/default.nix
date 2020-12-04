@@ -2,11 +2,11 @@
 
 stdenv.mkDerivation rec {
   pname = "guile-json";
-  version = "3.3.0";
+  version = "4.4.1";
 
   src = fetchurl {
     url = "mirror://savannah/guile-json/${pname}-${version}.tar.gz";
-    sha256 = "0gbqiii8yl5vg5d2gf8j6pd1wwy9c37sxpdvv94rqnnp11rkbdyf";
+    sha256 = "sha256-UqZt3pqXQzeHpzEiMvOMKSh1gK/K2KaJ70jMllNxBPc=";
   };
 
   postConfigure = ''
