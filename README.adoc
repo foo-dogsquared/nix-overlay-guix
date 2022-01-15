@@ -1,0 +1,94 @@
+= Guix overlay for NixOS
+:toc:
+
+
+It's an overlay for installing Guix in NixOS.
+Forked originally from link:https://github.com/Emiller88/guix[Emiller88's Guix overlay].
+
+
+
+
+== What's in the flake?
+
+Here's what the flake should contain from the most interesting to the most boring.
+
+* `overlay` which contains the overlay for the Guix (and its dependencies) as a Nix package.
+* `packages.${system}.${package}` containing derivations of Guix and the dependencies.
+* `nixosModules.guix` is the primary NixOS module from link:./module/[`./module/`] exported for this project.
+* `devShell.${system}` is the development shell for this project.
+
+It primarily contains a package for Guix (built from source) and a NixOS module for easily setting up Guix in your systems.
+Please see link:./flake.nix[`./flake.nix`] for more details.
+
+
+
+
+== Prerequisites
+
+You need Nix 2.4 and above to enable Nix flakes and the new command line interface.
+To enable them, you need to add `experimental-features = nix-command flakes` from your Nix configuration (e.g., `/etc/nix/nix.conf`).
+
+Now, to add it in your flake configuration...
+
+[source, nix]
+----
+inputs.guix-overlay = "github:foo-dogsquared/nix-overlay-guix";
+----
+
+...and add the overlay in `nixpkgs.overlays`.
+
+[source, nix]
+----
+nixpkgs.overlays = [
+  # Your overlays...
+
+  # The guix overlay.
+  inputs.guix-overlay.overlay
+];
+----
+
+You can add Guix as a additional package or as an additional service to your NixOS systems.
+
+[source, nix]
+----
+# configuration.nix
+{
+  # ...the rest of your NixOS system config.
+
+　# Enabling the Guix daemon and the package manager in your system.
+  services.guix.enable = true;
+}
+----
+
+
+
+
+== Why fork it?
+
+* First and foremost, I want to explore how to make an overlay like this.
+I want the two package manager work together without much trouble (in the side of NixOS anyways).
+
+* Try to make Guix work on a NixOS-based system.
+I want it to make my Guix workflow works without resorting to virtual machines.
+My workstation is just a potato ran by a hamster that is nearing its life expectancy and I cannot afford it any longer.
+I WANT IT TO JUST WORK!
+
+* Well, the original repository doesn't see much additional commits in the last year.
+In that timeframe, Guix v1.3.0 has been released and more features is yet to be seen such as the Guix home configurations and additional fixes and small-scale features.
+I don't want to miss out with another clunky virtual machine that is just further making my battery drain more.
+
+
+=== TODO
+
+* [ ] Cleanup the codebase.
+** [ ] Cleanup the additional Guile modules.
+** [ ] Format with `nixfmt`.
+
+* [ ] Document the flake and its outputs.
+
+* [ ] Make it compatible with the traditional `default.nix`.
+** [ ] Use link:https://github.com/edolstra/flake-compat[this module].
+
+* [ ] Cache the package set of this project.
+
+* [ ] Make use of a CI system to automate building and updating.
