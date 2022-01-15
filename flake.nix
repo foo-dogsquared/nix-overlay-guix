@@ -8,9 +8,9 @@
     in {
 
       overlay = final: prev:
-        let guilePackages = prev.callPackages ./guile { };
+        let guilePackages = prev.callPackages ./pkgs/guile { };
         in rec {
-          guix = prev.callPackage ./package { inherit guilePackages; };
+          guix = prev.callPackage ./pkgs/guix.nix { inherit guilePackages; };
           inherit (guilePackages)
             guile-gnutls guile-gcrypt guile-git guile-json guile-sqlite3
             guile-ssh guile-zstd guile-semver;
@@ -23,7 +23,7 @@
 
       defaultPackage = forAllSystems (system: self.packages.${system}.guix);
 
-      nixosModules = { guix = import ./module; };
+      nixosModules = { guix = import ./modules/nixos/guix.nix; };
 
       devShell = forAllSystems (system: import ./shell.nix { pkgs = import nixpkgs { inherit system; }; });
     };
