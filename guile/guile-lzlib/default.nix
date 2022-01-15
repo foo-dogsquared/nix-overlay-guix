@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, guile, libgcrypt, autoreconfHook, pkgconfig, texinfo, lzlib
+{ stdenv, lib, fetchurl, guile, libgcrypt, autoreconfHook, pkgconfig, texinfo, lzlib
 }:
 
 stdenv.mkDerivation rec {
@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
   nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
   buildInputs = [ guile lzlib ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description =
       "Guile-lzlib is a GNU Guile library providing bindings to lzlib";
     homepage = "https://notabug.org/guile-lzlib/guile-lzlib";

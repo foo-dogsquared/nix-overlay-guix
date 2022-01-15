@@ -1,13 +1,13 @@
-{ stdenv, fetchurl, guile, sqlite, autoreconfHook, pkg-config, texinfo }:
+{ stdenv, lib, fetchurl, guile, sqlite, autoreconfHook, pkg-config, texinfo }:
 
 stdenv.mkDerivation rec {
   pname = "guile-sqlite3";
-  version = "0.1.0";
+  version = "0.1.3";
 
   src = fetchurl {
     url =
       "https://notabug.org/guile-sqlite3/${pname}/archive/v${version}.tar.gz";
-    sha256 = "1s9gmj72vszn999c82vnq0vic7ly4wcg8lz1qcfmhgk9pihcs0bm";
+    sha256 = "sha256-FYy4KVjGMpMZ+RFBKZnqElmA8yf1QYW/Da0nHW+PRcI=";
   };
 
   postConfigure = ''
@@ -19,7 +19,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ guile ];
   propagatedBuildInputs = [ sqlite ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Bindings to Sqlite3 for GNU Guile";
     homepage = "https://notabug.org/guile-gcrypt/guile-gcrypt";
     license = licenses.gpl3;

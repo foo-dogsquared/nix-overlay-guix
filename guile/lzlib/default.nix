@@ -1,4 +1,4 @@
-{ stdenv, fetchurl, guile, libgcrypt, autoreconfHook, pkgconfig, texinfo, }:
+{ stdenv, lib, fetchurl, guile, libgcrypt, autoreconfHook, pkgconfig, texinfo, }:
 # https://git.savannah.gnu.org/cgit/guix.git/tree/gnu/packages/compression.scm#n1816
 stdenv.mkDerivation rec {
   pname = "lzlib";
@@ -13,7 +13,7 @@ stdenv.mkDerivation rec {
   # nativeBuildInputs = [ pkgconfig ];
   # buildInputs = [ ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "lzlib is a GNU Guile library providing bindings to lzlib";
     homepage = "https://notabug.org/guile-lzlib/guile-lzlib";
     # license = licenses.bsd-2;

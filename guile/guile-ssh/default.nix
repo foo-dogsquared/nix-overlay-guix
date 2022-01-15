@@ -1,4 +1,4 @@
-{ stdenv, fetchFromGitHub, guile, libssh, autoreconfHook, pkg-config, texinfo
+{ stdenv, lib, fetchFromGitHub, guile, libssh, autoreconfHook, pkg-config, texinfo
 , which }:
 
 stdenv.mkDerivation rec {
@@ -25,7 +25,7 @@ stdenv.mkDerivation rec {
   buildInputs = [ guile ];
   propagatedBuildInputs = [ libssh ];
 
-  meta = with stdenv.lib; {
+  meta = with lib; {
     description = "Bindings to Libssh for GNU Guile";
     homepage = "https://github.com/artyom-poptsov/guile-ssh";
     license = licenses.gpl3;
