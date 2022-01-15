@@ -4,11 +4,13 @@ let
   cfg = config.services.guix;
 
   guixBuildUser = id: {
+    group = cfg.group;
+    extraGroups = [ cfg.group ];
     name = "${cfg.userPrefix}${toString id}";
     createHome = false;
     description = "Guix build user ${toString id}";
-    extraGroups = [ cfg.group ];
     isSystemUser = true;
+    shell = pkgs.nologin;
   };
 
   guixBuildUsers = numberOfUsers:
