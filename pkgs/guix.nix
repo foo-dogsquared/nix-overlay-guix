@@ -112,7 +112,6 @@ stdenv.mkDerivation rec {
       "A transactional package manager for an advanced distribution of the GNU system";
     homepage = "https://guix.gnu.org/";
     license = licenses.gpl3;
-    maintainers = with maintainers; [ bqv ];
     platforms = platforms.linux;
   };
 }
