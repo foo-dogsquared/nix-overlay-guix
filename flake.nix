@@ -13,7 +13,7 @@
           guix = prev.callPackage ./package { inherit guilePackages; };
           inherit (guilePackages)
             guile-gnutls guile-gcrypt guile-git guile-json guile-sqlite3
-            guile-ssh;
+            guile-ssh guile-zstd guile-semver;
           scheme-bytestructures = guilePackages.bytestructures;
         };
 
@@ -24,5 +24,7 @@
       defaultPackage = forAllSystems (system: self.packages.${system}.guix);
 
       nixosModules = { guix = import ./module; };
+
+      devShell = forAllSystems (system: import ./shell.nix { pkgs = import nixpkgs { inherit system; }; });
     };
 }

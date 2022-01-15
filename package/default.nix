@@ -1,13 +1,13 @@
-{ stdenv, pkgs, lib, fetchurl, pkg-config, makeWrapper, zlib, bzip2, guile
-, guilePackages, storeDir ? null, stateDir ? null }:
+{ stdenv, pkgs, lib, fetchurl, pkg-config, makeWrapper, zlib, bzip2, guile, guile-lib
+, guilePackages, sqlite, libgcrypt, storeDir ? null, stateDir ? null }:
 
 stdenv.mkDerivation rec {
   pname = "guix";
-  version = "1.2.0";
+  version = "1.3.0";
 
   src = fetchurl {
     url = "mirror://gnu/guix/${pname}-${version}.tar.gz";
-    sha256 = "sha256-Xs33ztJbH7DKfFfnlLe2DIp63LFSYd7CrzeSXIOMbXQ=";
+    sha256 = "sha256-yw9GHEjVgj3+9/iIeaF5c37hTE3ZNzLWcZMvxOJQU+g=";
   };
 
   postConfigure = ''
@@ -26,10 +26,15 @@ stdenv.mkDerivation rec {
       guile-gnutls
       guile-zlib
       bytestructures
+
+      # Optional dependencies.
+      guile-lib
+      guile-semver
+      guile-zstd
     ] (m: (m.override { inherit guile; }).out);
 
   nativeBuildInputs = [ pkg-config makeWrapper ];
-  buildInputs = [ zlib bzip2 ] ++ modules;
+  buildInputs = [ zlib bzip2 sqlite libgcrypt ] ++ modules;
   propagatedBuildInputs = [ guile ];
 
   GUILE_LOAD_PATH = let
