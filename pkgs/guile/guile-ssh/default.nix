@@ -1,28 +1,38 @@
-{ stdenv, lib, fetchFromGitHub, guile, libssh, autoreconfHook, pkg-config, texinfo
+{ stdenv, lib, fetchFromGitHub, guile_3_0, libssh, autoreconfHook, pkg-config, texinfo
 , which }:
 
 stdenv.mkDerivation rec {
   pname = "guile-ssh";
-  version = "0.12.0";
+  version = "0.15.0";
 
   src = fetchFromGitHub {
     owner = "artyom-poptsov";
     repo = pname;
     rev = "v${version}";
-    sha256 = "054hd9rzfhb48gc1hw3rphhp0cnnd4bs5qmidy5ygsyvy9ravlad";
+    sha256 = "sha256-dcG3Q1K1/CxrMeEUWSZ3Qu57Aesalydg4UjkIqg1NJ0=";
   };
 
-  configureFlags = [ "--with-guilesitedir=\${out}/share/guile/site" ];
+  configureFlags = [
+    "--with-guilesitedir=\${out}/share/guile/site/ssh"
+  ];
+
+  postConfigure = ''
+    sed -i '/moddir\s*=/s%=.*%=''${out}/share/guile/site/ssh%' modules/ssh/Makefile;
+    sed -i '/godir\s*=/s%=.*%=''${out}/share/guile/ccache/ssh%' modules/ssh/Makefile;
+    sed -i '/moddir\s*=/s%=.*%=''${out}/share/guile/site/ssh/dist%' modules/ssh/dist/Makefile;
+    sed -i '/godir\s*=/s%=.*%=''${out}/share/guile/ccache/ssh/dist%' modules/ssh/dist/Makefile;
+    sed -i '/ccachedir\s*=/s%=.*%=''${out}/share/guile/ccache/ssh%' tests/Makefile;
+  '';
 
   postFixup = ''
-    for f in $out/share/guile/site/ssh/**.scm; do \
+    for f in $(find $out/share/guile/site -name '*.scm'); do \
       substituteInPlace $f \
         --replace "libguile-ssh" "$out/lib/libguile-ssh"; \
     done
   '';
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo which ];
-  buildInputs = [ guile ];
+  buildInputs = [ guile_3_0 ];
   propagatedBuildInputs = [ libssh ];
 
   meta = with lib; {

@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, guile, libgcrypt, autoreconfHook, pkgconfig, texinfo, lzlib
+{ stdenv, lib, fetchurl, guile_3_0, libgcrypt, autoreconfHook, pkgconfig, texinfo, lzlib
 }:
 
 stdenv.mkDerivation rec {
@@ -16,7 +16,8 @@ stdenv.mkDerivation rec {
   '';
 
   nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
-  buildInputs = [ guile lzlib ];
+  buildInputs = [ guile_3_0 ];
+  propagatedBuildInputs = [ lzlib ];
 
   meta = with lib; {
     description =

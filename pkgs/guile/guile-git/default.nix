@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchFromGitLab, guile, libgit2, bytestructures, autoreconfHook
+{ stdenv, lib, fetchFromGitLab, guile_3_0, libgit2, bytestructures, autoreconfHook
 , pkg-config, texinfo }:
 
 stdenv.mkDerivation rec {
@@ -18,7 +18,7 @@ stdenv.mkDerivation rec {
   '';
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
-  buildInputs = [ guile ];
+  buildInputs = [ guile_3_0 ];
   propagatedBuildInputs = [ libgit2 bytestructures ];
 
   meta = with lib; {

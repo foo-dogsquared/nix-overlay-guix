@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, guile, texinfo, pkg-config }:
+{ stdenv, lib, fetchurl, guile_3_0, texinfo, pkg-config }:
 
 stdenv.mkDerivation rec {
   pname = "guile-json";
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
   '';
 
   nativeBuildInputs = [ pkg-config texinfo ];
-  buildInputs = [ guile ];
+  buildInputs = [ guile_3_0 ];
 
   meta = with lib; {
     description = "JSON Bindings for GNU Guile";

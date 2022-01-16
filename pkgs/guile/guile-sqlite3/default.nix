@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, guile, sqlite, autoreconfHook, pkg-config, texinfo }:
+{ stdenv, lib, fetchurl, guile_3_0, sqlite, autoreconfHook, pkg-config, texinfo }:
 
 stdenv.mkDerivation rec {
   pname = "guile-sqlite3";
@@ -16,7 +16,7 @@ stdenv.mkDerivation rec {
   '';
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
-  buildInputs = [ guile ];
+  buildInputs = [ guile_3_0 ];
   propagatedBuildInputs = [ sqlite ];
 
   meta = with lib; {

@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchFromGitHub, guile, autoreconfHook, pkg-config }:
+{ stdenv, lib, fetchFromGitHub, guile_3_0, autoreconfHook, pkg-config }:
 
 stdenv.mkDerivation rec {
   pname = "scheme-bytestructures";
@@ -17,7 +17,7 @@ stdenv.mkDerivation rec {
   '';
 
   nativeBuildInputs = [ autoreconfHook pkg-config ];
-  buildInputs = [ guile ];
+  buildInputs = [ guile_3_0 ];
 
   meta = with lib; {
     description = "Structured access to bytevector contents";

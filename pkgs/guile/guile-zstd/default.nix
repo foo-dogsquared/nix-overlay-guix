@@ -1,4 +1,4 @@
-{ stdenv, lib, fetchurl, guile, libgcrypt, autoreconfHook, pkgconfig, texinfo, zstd
+{ stdenv, lib, fetchurl, guile_3_0, libgcrypt, autoreconfHook, pkgconfig, texinfo, zstd
 }:
 
 stdenv.mkDerivation rec {
@@ -10,13 +10,13 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-blfvUk8gyrecpf1iNmxUNfcc9lL1gvwefWJYXpDUmcU=";
   };
 
-  postConfigure = ''
-    sed -i '/moddir\s*=/s%=.*%=''${out}/share/guile/site%' Makefile;
-    sed -i '/godir\s*=/s%=.*%=''${out}/share/guile/ccache%' Makefile;
-  '';
-
   nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
-  buildInputs = [ guile zstd ];
+  buildInputs = [ guile_3_0 ];
+  propagatedBuildInputs = [ zstd ];
+  postConfigure = ''
+    sed -i '/guilemoduledir\s*=/s%=.*%=''${out}/share/guile/site%' Makefile;
+    sed -i '/guileobjectdir\s*=/s%=.*%=''${out}/share/guile/ccache%' Makefile;
+  '';
 
   meta = with lib; {
     description =
