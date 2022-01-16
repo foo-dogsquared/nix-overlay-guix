@@ -1,6 +1,8 @@
-{ stdenv, pkgs, lib, fetchurl, pkg-config, makeWrapper, zlib, bzip2, guile, guile-lib
-, guilePackages, sqlite, libgcrypt, storeDir ? null, stateDir ? null }:
+{ stdenv, pkgs, lib, fetchurl, pkg-config, makeWrapper, guile_3_0, guile-lib, git
+, guilePackages, help2man, storeDir ? null, stateDir ? null }:
 
+# We're using Guile 3.0 especially that 1.4.0 is nearing as of updating this
+# package definition.
 stdenv.mkDerivation rec {
   pname = "guix";
   version = "1.3.0";
@@ -15,39 +17,50 @@ stdenv.mkDerivation rec {
     sed -i '/guileobjectdir\s*=/s%=.*%=''${out}/share/guile/ccache%' Makefile;
   '';
 
-  modules = with guilePackages;
-    lib.forEach [
-      guile-gcrypt
-      guile-git
-      guile-json
-      guile-lzlib
-      guile-sqlite3
-      guile-ssh
-      guile-gnutls
-      guile-zlib
-      bytestructures
-
-      # Optional dependencies.
-      guile-lib
-      guile-semver
-      guile-zstd
-    ] (m: (m.override { inherit guile; }).out);
+  # Take note all of the modules here should have Guile 3.x. If it's compiled
+  # with Guile 2.x, override the package to use the updated version.
+  modules = with guilePackages; [
+    guile-avahi
+    guile-gcrypt
+    guile-git
+    guile-gnutls
+    guile-json
+    guile-lzlib
+    guile-semver
+    guile-sqlite3
+    guile-ssh
+    guile-zlib
+    guile-zstd
+    guile3-lib
+  ];
 
   nativeBuildInputs = [ pkg-config makeWrapper ];
-  buildInputs = [ zlib bzip2 sqlite libgcrypt ] ++ modules;
-  propagatedBuildInputs = [ guile ];
+  buildInputs = [ git help2man ] ++ modules;
+  propagatedBuildInputs = [ guile_3_0 ];
 
+  # For more information, see the respective manual for Guile modules. We're
+  # also going to use this later on to wrap Guix with the resulting
+  # environment.
+  # TODO: Add module path to `$out/share/guile/site/${GUILE_VERSION}`.
   GUILE_LOAD_PATH = let
     guilePath = [
       "\${out}/share/guile/site"
-      "${guilePackages.guile-gnutls.out}/lib/guile/extensions"
-    ] ++ (lib.concatMap (module: [ "${module}/share/guile/site" ]) modules);
+    ] ++ (lib.concatMap (module: [
+      "${module}/share/guile/site"
+      "${module}/share/guile"
+      "${module}/share"
+    ]) modules);
   in "${lib.concatStringsSep ":" guilePath}";
+
   GUILE_LOAD_COMPILED_PATH = let
     guilePath = [
       "\${out}/share/guile/ccache"
-      "${guilePackages.guile-gnutls.out}/lib/guile/extensions"
-    ] ++ (lib.concatMap (module: [ "${module}/share/guile/ccache" ]) modules);
+    ] ++ (lib.concatMap (module: [
+      "${module}/share/guile/ccache"
+      "${module}/share/guile/site" # Some Nix packages with Guile modules simply combine all of the outputs.
+      "${module}/share/guile" # If ever they put it there, I'm close to being crazy.
+      "${module}/share" # NOW, I'M CRAZY!
+    ]) modules);
   in "${lib.concatStringsSep ":" guilePath}";
 
   configureFlags = [ ]
@@ -64,7 +77,7 @@ stdenv.mkDerivation rec {
       --prefix GUILE_LOAD_COMPILED_PATH : "${GUILE_LOAD_COMPILED_PATH}"
   '';
 
-  passthru = { inherit guile; };
+  passthru = { inherit guile_3_0; };
 
   meta = with lib; {
     description =
