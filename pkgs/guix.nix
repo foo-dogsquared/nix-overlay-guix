@@ -1,5 +1,5 @@
 { stdenv, pkgs, lib, fetchurl, pkg-config, makeWrapper, guile_3_0, guile-lib, git
-, guilePackages, help2man, storeDir ? null, stateDir ? null }:
+, guilePackages, help2man, zlib, bzip2, storeDir ? null, stateDir ? null }:
 
 # We're using Guile 3.0 especially that 1.4.0 is nearing as of updating this
 # package definition.
@@ -19,23 +19,25 @@ stdenv.mkDerivation rec {
 
   # Take note all of the modules here should have Guile 3.x. If it's compiled
   # with Guile 2.x, override the package to use the updated version.
-  modules = with guilePackages; [
-    guile-avahi
-    guile-gcrypt
-    guile-git
-    guile-gnutls
-    guile-json
-    guile-lzlib
-    guile-semver
-    guile-sqlite3
-    guile-ssh
-    guile-zlib
-    guile-zstd
-    guile3-lib
-  ];
+  modules = with guilePackages;
+    lib.forEach [
+      bytestructures
+      guile-avahi
+      guile-gcrypt
+      guile-git
+      guile-gnutls
+      guile-json
+      guile-lzlib
+      guile-semver
+      guile-sqlite3
+      guile-ssh
+      guile-zlib
+      guile-zstd
+      guile3-lib
+    ] (m: m.out);
 
   nativeBuildInputs = [ pkg-config makeWrapper ];
-  buildInputs = [ git help2man ] ++ modules;
+  buildInputs = [ zlib bzip2 git help2man ] ++ modules;
   propagatedBuildInputs = [ guile_3_0 ];
 
   # For more information, see the respective manual for Guile modules. We're
