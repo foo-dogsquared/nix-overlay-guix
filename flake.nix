@@ -12,8 +12,8 @@
         in rec {
           guix = prev.callPackage ./pkgs/guix.nix { inherit guilePackages; };
           inherit (guilePackages)
-            guile-gnutls guile-gcrypt guile-git guile-json guile-sqlite3
-            guile-ssh guile-zstd guile-semver;
+            guile-gnutls guile-gcrypt guile-git guile-json guile-sqlite3 guile-lzlib guile-zlib
+            guile-ssh guile-zstd guile-semver guile-avahi guile3-lib;
           scheme-bytestructures = guilePackages.bytestructures;
         };
 
