@@ -15,6 +15,7 @@
             guile-gnutls guile-gcrypt guile-git guile-json guile-sqlite3 guile-lzlib guile-zlib
             guile-ssh guile-zstd guile-semver guile-avahi guile3-lib;
           scheme-bytestructures = guilePackages.bytestructures;
+          guix_binary_1_3_0 = prev.callPackage ./pkgs/guix-binary/default.nix { };
         };
 
       packages = forAllSystems (system:

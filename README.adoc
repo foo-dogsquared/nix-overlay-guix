@@ -89,6 +89,8 @@ I don't want to miss out with another clunky virtual machine that is just furthe
 * [ ] Make it compatible with the traditional `default.nix`.
 ** [ ] Use link:https://github.com/edolstra/flake-compat[this module].
 
-* [ ] Cache the package set of this project.
+* [x] Cache the package set of this project.
 
-* [ ] Make use of a CI system to automate building and updating.
+* [x] Make use of a CI system to automate building and updating.
+
+* [x] Create packages for Guix with the binary installation.

@@ -14,5 +14,6 @@ jobs:
         with:
           name: foo-dogsquared
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+          pushFilter: "guix-binary"
       - name: Build custom packages
         run: nix shell nixpkgs#nix-build-uncached --command nix-build-uncached ./ci.nix
