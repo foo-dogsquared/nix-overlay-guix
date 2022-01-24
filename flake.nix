@@ -24,7 +24,10 @@
 
       defaultPackage = forAllSystems (system: self.packages.${system}.guix);
 
-      nixosModules = { guix = import ./modules/nixos/guix.nix; };
+      nixosModules = {
+        guix = import ./modules/nixos/guix.nix;
+        guix-binary = import ./modules/nixos/guix-binary.nix;
+      };
 
       devShell = forAllSystems (system: import ./shell.nix { pkgs = import nixpkgs { inherit system; }; });
     };
