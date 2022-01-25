@@ -18,6 +18,10 @@ Here's what the flake should contain from the most interesting to the most borin
 * `devShell.${system}` is the development shell for this project.
 
 It primarily contains a package for Guix (built from source) and a NixOS module for easily setting up Guix in your systems.
+
+* `devShells.${system}.guix` is the development shell for Guix project.
+It is useful for making a quick start for link:https://guix.gnu.org/en/manual/en/html_node/Contributing.html#Contributing[contributing into the project].
+
 Please see link:./flake.nix[`./flake.nix`] for more details.
 
 

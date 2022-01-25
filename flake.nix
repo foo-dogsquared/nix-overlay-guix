@@ -30,5 +30,13 @@
       };
 
       devShell = forAllSystems (system: import ./shell.nix { pkgs = import nixpkgs { inherit system; }; });
+
+      devShells = forAllSystems (system:
+        import ./shells {
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [ self.overlay ];
+          };
+        });
     };
 }
