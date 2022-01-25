@@ -10,14 +10,19 @@ Forked originally from link:https://github.com/Emiller88/guix[Emiller88's Guix o
 
 == What's in the flake?
 
+To quickly show the good, just run `nix flake show ${FLAKE}`.
+
 Here's what the flake should contain from the most interesting to the most boring.
 
 * `overlay` which contains the overlay for the Guix (and its dependencies) as a Nix package.
+
 * `packages.${system}.${package}` containing derivations of Guix and the dependencies.
-* `nixosModules.guix` is the primary NixOS module from link:./module/[`./module/`] exported for this project.
+
+* `nixosModules` contains various link:./modules/nixos/[NixOS modules] exported for this project.
+The most useful (and only) modules are for enabling Guix daemon (either with the link:./modules/nixos/guix.nix[Nix-built version] or the link:./modules/nixos/guix-binary.nix[binary installation]).
+
 * `devShell.${system}` is the development shell for this project.
 
-It primarily contains a package for Guix (built from source) and a NixOS module for easily setting up Guix in your systems.
 
 * `devShells.${system}.guix` is the development shell for Guix project.
 It is useful for making a quick start for link:https://guix.gnu.org/en/manual/en/html_node/Contributing.html#Contributing[contributing into the project].
@@ -85,10 +90,10 @@ I don't want to miss out with another clunky virtual machine that is just furthe
 === TODO
 
 * [ ] Cleanup the codebase.
-** [ ] Cleanup the additional Guile modules.
+** [x] Cleanup the additional Guile modules.
 ** [ ] Format with `nixfmt`.
 
-* [ ] Document the flake and its outputs.
+* [x] Document the flake and its outputs.
 
 * [ ] Make it compatible with the traditional `default.nix`.
 ** [ ] Use link:https://github.com/edolstra/flake-compat[this module].
@@ -98,6 +103,8 @@ I don't want to miss out with another clunky virtual machine that is just furthe
 * [x] Make use of a CI system to automate building and updating.
 
 * [x] Create packages for Guix with the binary installation.
+** [ ] Create the binary installation with various versions just for fun ;p
+** [ ] Make the same with Nix-built Guix with offering the various versions.
 
 
 === Issues

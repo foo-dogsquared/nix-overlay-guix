@@ -10,12 +10,16 @@
       overlay = final: prev:
         let guilePackages = prev.callPackages ./pkgs/guile { };
         in rec {
-          guix = prev.callPackage ./pkgs/guix.nix { inherit guilePackages; };
           inherit (guilePackages)
-            guile-gnutls guile-gcrypt guile-git guile-json guile-sqlite3 guile-lzlib guile-zlib
-            guile-ssh guile-zstd guile-semver guile-avahi guile3-lib;
+            guile-gnutls guile-gcrypt guile-git guile-json guile-sqlite3
+            guile-lzlib guile-zlib guile-ssh guile-zstd guile-semver guile-avahi
+            guile3-lib;
           scheme-bytestructures = guilePackages.bytestructures;
-          guix_binary_1_3_0 = prev.callPackage ./pkgs/guix-binary/default.nix { };
+
+          # Guix that comes in all flavors.
+          guix = prev.callPackage ./pkgs/guix.nix { inherit guilePackages; };
+          guix_binary_1_3_0 =
+            prev.callPackage ./pkgs/guix-binary/default.nix { };
         };
 
       packages = forAllSystems (system:
@@ -29,7 +33,13 @@
         guix-binary = import ./modules/nixos/guix-binary.nix;
       };
 
-      devShell = forAllSystems (system: import ./shell.nix { pkgs = import nixpkgs { inherit system; }; });
+      devShell = forAllSystems (system:
+        import ./shell.nix {
+          pkgs = import nixpkgs {
+            overlays = [ self.overlay ];
+            inherit system;
+          };
+        });
 
       devShells = forAllSystems (system:
         import ./shells {
