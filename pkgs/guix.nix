@@ -1,15 +1,16 @@
-{ stdenv, pkgs, lib, fetchurl, pkg-config, makeWrapper, guile_3_0, guile-lib, git
+{ stdenv, pkgs, lib, fetchgit, pkg-config, makeWrapper, guile_3_0, guile-lib, git
 , guilePackages, help2man, zlib, bzip2, storeDir ? null, stateDir ? null }:
 
 # We're using Guile 3.0 especially that 1.4.0 is nearing as of updating this
 # package definition.
 stdenv.mkDerivation rec {
   pname = "guix";
-  version = "1.3.0";
+  version = "unstable-2022-08-22";
 
-  src = fetchurl {
-    url = "mirror://gnu/guix/${pname}-${version}.tar.gz";
-    sha256 = "sha256-yw9GHEjVgj3+9/iIeaF5c37hTE3ZNzLWcZMvxOJQU+g=";
+  src = fetchgit {
+    url = "https://git.savannah.gnu.org/git/guix.git";
+    rev = "59ee837d8b11d7d688045b601e8b240ccbdbe7c7";
+    sha256 = "sha256-P2VLyfE+Ft+HwCnJR6eVROgHYwlLEvHMW0ME5o2KNY0=";
   };
 
   postConfigure = ''
