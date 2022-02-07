@@ -1,20 +1,24 @@
-{ stdenv, pkgs, lib, fetchurl, pkg-config, makeWrapper, guile_3_0, guile-lib, git
-, guilePackages, help2man, zlib, bzip2, storeDir ? null, stateDir ? null }:
+{ stdenv, pkgs, lib, fetchgit, pkg-config, makeWrapper, guile_3_0, guile-lib, git
+, guilePackages, help2man, zlib, bzip2, autoconf-archive, autoreconfHook, graphviz, texinfo, locale, perlPackages
+, gettext
+, storeDir ? null, stateDir ? null }:
 
 # We're using Guile 3.0 especially that 1.4.0 is nearing as of updating this
 # package definition.
 stdenv.mkDerivation rec {
   pname = "guix";
-  version = "1.3.0";
+  version = "unstable-2022-03-26";
 
-  src = fetchurl {
-    url = "mirror://gnu/guix/${pname}-${version}.tar.gz";
-    sha256 = "sha256-yw9GHEjVgj3+9/iIeaF5c37hTE3ZNzLWcZMvxOJQU+g=";
+  src = fetchgit {
+    url = "https://git.savannah.gnu.org/git/guix.git";
+    rev = "cabda1197e7925f58a8532534afc1bde6c5eb377";
+    sha256 = "sha256-MJEnCqcDzmkfX+U8vI928au8gPAT1BHgOj87zHKxpBo=";
   };
 
-  postConfigure = ''
-    sed -i '/guilemoduledir\s*=/s%=.*%=''${out}/share/guile/site%' Makefile;
-    sed -i '/guileobjectdir\s*=/s%=.*%=''${out}/share/guile/ccache%' Makefile;
+  preAutoreconf = ''
+    ./bootstrap
+    sed -i '/guilemoduledir\s*=/s%=.*%=''${out}/share/guile/site%' configure.ac
+    sed -i '/guileobjectdir\s*=/s%=.*%=''${out}/share/guile/ccache%' configure.ac
   '';
 
   # Take note all of the modules here should have Guile 3.x. If it's compiled
