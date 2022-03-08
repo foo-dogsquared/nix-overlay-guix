@@ -10,7 +10,7 @@ let
     createHome = false;
     description = "Guix build user ${toString id}";
     isSystemUser = true;
-    shell = pkgs.nologin;
+    shell = pkgs.shadow;
   };
 
   guixBuildUsers = numberOfUsers:
