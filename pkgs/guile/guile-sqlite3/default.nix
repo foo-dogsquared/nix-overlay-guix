@@ -21,7 +21,7 @@ stdenv.mkDerivation rec {
 
   meta = with lib; {
     description = "Bindings to Sqlite3 for GNU Guile";
-    homepage = "https://notabug.org/guile-gcrypt/guile-gcrypt";
+    homepage = "https://notabug.org/guile-sqlite3/guile-sqlite3";
     license = licenses.gpl3;
     maintainers = with maintainers; [ bqv ];
     platforms = platforms.all;

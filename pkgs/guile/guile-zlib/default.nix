@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
     description =
       "Guile-zlib is a GNU Guile library providing bindings to zlib";
     homepage = "https://notabug.org/guile-zlib/guile-zlib";
-    # license = licenses.gpl3;
+    license = licenses.gpl3Plus;
     maintainers = with maintainers; [ emiller88 ];
     platforms = platforms.all;
   };
