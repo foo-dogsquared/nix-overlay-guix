@@ -7,12 +7,12 @@
 # package definition.
 stdenv.mkDerivation rec {
   pname = "guix";
-  version = "unstable-2022-03-26";
+  version = "unstable-2022-04-23";
 
   src = fetchgit {
     url = "https://git.savannah.gnu.org/git/guix.git";
-    rev = "cabda1197e7925f58a8532534afc1bde6c5eb377";
-    sha256 = "sha256-MJEnCqcDzmkfX+U8vI928au8gPAT1BHgOj87zHKxpBo=";
+    rev = "e32cc011bbe899fda432906776702f74fa6b1450";
+    sha256 = "sha256-PRvkl2zmmJeL75AYt1rGTsX+FoJqEN3I7Tf5OIR3LRA=";
   };
 
   preAutoreconf = ''
