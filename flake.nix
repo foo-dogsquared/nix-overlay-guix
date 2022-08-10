@@ -1,6 +1,8 @@
 {
   description = "A package and module for using GNU Guix on Nix(OS)";
 
+  inputs.nixpkgs.url = "github:NixOS/nixpkgs/22.05";
+
   outputs = { self, nixpkgs }:
     let
       forAllSystems =
