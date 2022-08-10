@@ -86,7 +86,7 @@ in {
       serviceConfig = {
         ExecStart =
           "/var/guix/profiles/per-user/root/current-guix/bin/guix-daemon --build-users-group=${cfg.group} ${
-            lib.concatStringsSep " " cfg.extraArgs
+            lib.escapeShellArgs cfg.extraArgs
           }";
         Environment = [
           "GUIX_LOCPATH=/var/guix/profiles/per-user/root/guix-profile/lib/locale"
@@ -106,7 +106,7 @@ in {
       description = "Publish the GNU Guix store";
       serviceConfig = {
         ExecStart = ''
-          /var/guix/profiles/per-user/root/current-guix/bin/guix publish --user=${cfg.publish.user} --port=${cfg.publish.port}
+          /var/guix/profiles/per-user/root/current-guix/bin/guix publish --user=${lib.escapeShellArg cfg.publish.user} --port=${lib.escapeShellArg cfg.publish.port}
         '';
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /gnu/store";
         RemainAfterExit = "yes";
@@ -149,17 +149,10 @@ in {
       # guix archive --authorize < ~root/.config/guix/current/share/guix/bordeaux.guix.gnu.org.pub
     '';
 
-    # you need to relogin for these to execute
-    environment.shellInit = ''
-      # Make the Guix command available to users
-      export PATH="/var/guix/profiles/per-user/root/current-guix/bin:$PATH"
-
-      export GUIX_LOCPATH="$HOME/.guix-profile/lib/locale"
-      export PATH="$HOME/.guix-profile/bin:$PATH"
-      export INFOPATH="$HOME/.guix-profile/share/info:$INFOPATH"
-
-      export GUIX_PROFILE="$HOME/.config/guix/current"
-      test -f $GUIX_PROFILE/etc/profile && . "$GUIX_PROFILE/etc/profile"
-    '';
+    environment.profiles = [
+      "$HOME/.config/guix/current"
+      "$HOME/.guix-profile"
+      "/var/guix/profiles/per-user/root/current-guix"
+    ];
   };
 }

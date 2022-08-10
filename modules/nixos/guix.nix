@@ -164,11 +164,10 @@ in {
       wantedBy = [ "multi-user.target" ];
     };
 
-    environment.shellInit = ''
-      export GUIX_PROFILE="$HOME/.config/guix/current"
-      [ -f "$GUIX_PROFILE/etc/profile" ] && source $GUIX_PROFILE/etc/profile
-      export GUIX_LOCPATH="${pkgs.glibcLocales}/lib/locale"
-      export INFOPATH="$GUIX_PROFILE/share/info:$INFOPATH"
-    '';
+    environment.profiles = [
+      "$HOME/.config/guix/current"
+      "$HOME/.guix-profile"
+      "/var/guix/profiles/per-user/root/current-guix"
+    ];
   };
 }
