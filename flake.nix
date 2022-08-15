@@ -8,7 +8,6 @@
       forAllSystems =
         nixpkgs.lib.genAttrs [ "x86_64-linux" "i686-linux" "aarch64-linux" ];
     in {
-
       overlays = {
         default = final: prev:
           let guilePackages = prev.callPackages ./pkgs/guile { };
@@ -47,5 +46,13 @@
         in {
           default = import ./shell.nix { inherit pkgs; };
         } // (import ./shells { inherit pkgs; }));
+
+      formatter = forAllSystems (system:
+        let
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [ self.overlays.default ];
+          };
+        in pkgs.nixpkgs-fmt);
     };
 }
