@@ -15,6 +15,7 @@ let
       inherit guile-gnutls;
       buildGuileModule = callPackage ./build-guile-module.nix { inherit guile; };
       bytestructures = callPackage ./bytestructures { };
+      disarchive = callPackage ./disarchive { };
       guile3-lib = callPackage ./guile3-lib { };
       guile-avahi = callPackage ./guile-avahi { };
       guile-gcrypt = callPackage ./guile-gcrypt { };
