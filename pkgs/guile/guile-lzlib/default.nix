@@ -1,7 +1,6 @@
-{ stdenv
+{ buildGuileModule
 , lib
 , fetchurl
-, guile_3_0
 , libgcrypt
 , autoreconfHook
 , pkgconfig
@@ -9,7 +8,7 @@
 , lzlib
 }:
 
-stdenv.mkDerivation rec {
+buildGuileModule rec {
   pname = "guile-lzlib";
   version = "0.0.2";
 
@@ -18,13 +17,7 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-hiPbd9RH57n/v8vCiDkOcGprGomxFx2u1gh0z+x+T4c=";
   };
 
-  postConfigure = ''
-    sed -i '/moddir\s*=/s%=.*%=''${out}/share/guile/site%' Makefile;
-    sed -i '/godir\s*=/s%=.*%=''${out}/share/guile/ccache%' Makefile;
-  '';
-
   nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
-  buildInputs = [ guile_3_0 ];
   propagatedBuildInputs = [ lzlib ];
 
   meta = with lib; {
@@ -32,7 +25,6 @@ stdenv.mkDerivation rec {
       "Guile-lzlib is a GNU Guile library providing bindings to lzlib";
     homepage = "https://notabug.org/guile-lzlib/guile-lzlib";
     # license = licenses.gpl3;
-    maintainers = with maintainers; [ emiller88 ];
-    platforms = platforms.all;
+    maintainers = with maintainers; [ foo-dogsquared ];
   };
 }
