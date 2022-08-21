@@ -1,7 +1,27 @@
-{ stdenv, pkgs, lib, fetchgit, pkg-config, makeWrapper, guile_3_0, guile-lib, git
-, guilePackages, help2man, zlib, bzip2, autoconf-archive, autoreconfHook, graphviz, texinfo, locale, perlPackages
+{ stdenv
+, pkgs
+, lib
+, fetchgit
+, pkg-config
+, makeWrapper
+, guile_3_0
+, guile-lib
+, git
+, guilePackages
+, help2man
+, zlib
+, bzip2
+, autoconf-archive
+, autoreconfHook
+, graphviz
+, texinfo
+, locale
+, perlPackages
 , gettext
-, storeDir ? null, stateDir ? null }:
+, glibcLocalesUtf8
+, storeDir ? null
+, stateDir ? "/var"
+}:
 
 # We're using Guile 3.0 especially that 1.4.0 is nearing as of updating this
 # package definition.
@@ -43,6 +63,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     pkg-config
+    glibcLocalesUtf8
     makeWrapper
     gettext
     autoreconfHook
@@ -65,7 +86,7 @@ stdenv.mkDerivation rec {
   # For more information, see the respective manual for Guile modules. We're
   # also going to use this later on to wrap Guix with the resulting
   # environment.
-  # TODO: Add module path to `$out/share/guile/site/${GUILE_VERSION}`.
+  GUIX_LOCPATH = "${glibcLocalesUtf8}/lib/locale";
   GUILE_LOAD_PATH =
     let
       guilePath = [
