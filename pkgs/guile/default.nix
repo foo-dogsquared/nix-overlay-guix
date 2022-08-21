@@ -9,23 +9,14 @@ let
         guile = guile_3_0;
         guileBindings = true;
       });
-
-      guile3-lib = (guile-lib.override { guile = guile_3_0; }).overrideAttrs
-        (attrs: {
-          postConfigure = ''
-            sed -i '/moddir\s*=/s%=.*%= ''${out}/share/guile/site%' Makefile;
-            sed -i '/godir\s*=/s%=.*%= ''${out}/share/guile/ccache%' Makefile;
-            sed -i '/moddir\s*=/s%=.*%= ''${out}/share/guile/site%' src/Makefile;
-            sed -i '/godir\s*=/s%=.*%= ''${out}/share/guile/ccache%' src/Makefile;
-          '';
-        });
     in
     {
-      inherit guile-gnutls guile3-lib;
+      inherit guile-gnutls;
       buildGuileModule = callPackage ./build-guile-module.nix {
         guile = guile_3_0;
       };
       bytestructures = callPackage ./bytestructures { };
+      guile3-lib = callPackage ./guile3-lib { };
       guile-avahi = callPackage ./guile-avahi { };
       guile-gcrypt = callPackage ./guile-gcrypt { };
       guile-git = callPackage ./guile-git { };
