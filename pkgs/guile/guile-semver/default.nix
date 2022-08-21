@@ -1,6 +1,6 @@
-{ stdenv, lib, fetchurl, guile_3_0, libgcrypt, autoreconfHook, pkgconfig, texinfo }:
+{ buildGuileModule, lib, fetchurl, guile_3_0, libgcrypt, autoreconfHook, pkgconfig, texinfo }:
 
-stdenv.mkDerivation rec {
+buildGuileModule rec {
   pname = "guile-semver";
   version = "0.1.1";
 
@@ -10,18 +10,12 @@ stdenv.mkDerivation rec {
   };
 
   nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
-  buildInputs = [ guile_3_0 ];
-
-  postConfigure = ''
-    sed -i '/moddir\s*=/s%=.*%=''${out}/share/guile/site%' Makefile;
-    sed -i '/ccachedir\s*=/s%=.*%=''${out}/share/guile/ccache%' Makefile;
-  '';
 
   meta = with lib; {
     description =
       "A GNU Guile library implementing Semantic Versioning 2.0.0";
     homepage = "https://ngyro.com/software/guile-semver.html";
     license = licenses.gpl3;
-    platforms = platforms.all;
+    maintainers = with maintainers; [ foo-dogsquared ];
   };
 }

@@ -4,9 +4,10 @@ let
   packages = self:
     let
       callPackage = newScope self;
+      guile = guile_3_0;
 
       guile-gnutls = (gnutls.override {
-        guile = guile_3_0;
+        inherit guile;
         guileBindings = true;
       });
 
@@ -22,9 +23,7 @@ let
     in
     {
       inherit guile-gnutls guile3-lib;
-      buildGuileModule = callPackage ./build-guile-module.nix {
-        guile = guile_3_0;
-      };
+      buildGuileModule = callPackage ./build-guile-module.nix { inherit guile; };
       bytestructures = callPackage ./bytestructures { };
       guile-avahi = callPackage ./guile-avahi { };
       guile-gcrypt = callPackage ./guile-gcrypt { };
