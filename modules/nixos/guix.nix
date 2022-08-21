@@ -70,7 +70,7 @@ in
       default = pkgs.guix;
       defaultText = "pkgs.guix";
       description = ''
-        Guix package to use.
+        The package containing the Guix daemon and command-line interface.
       '';
     };
 
@@ -103,13 +103,12 @@ in
 
     systemd.services.guix-daemon = {
       description = "Build daemon for GNU Guix";
+      environment = guixEnv;
       script = ''
         export GUIX_CONFIGURATION_DIRECTORY=$RUNTIME_DIRECTORY
-        ${guixWrapped}/bin/guix archive --authorize < \
+        guix archive --authorize < \
           ${cfg.package}/share/guix/ci.guix.gnu.org.pub
 
-        ${lib.concatStringsSep "\n"
-        (lib.mapAttrsToList (k: v: "export ${k}=${v}") guixEnv)}
         ROOT_PROFILE=$GUIX_STATE_DIRECTORY"/profiles/per-user/root/current-guix"
 
         DAEMON=$ROOT_PROFILE"/bin/guix-daemon"
@@ -137,13 +136,12 @@ in
 
     systemd.services.guix-publish = lib.mkIf cfg.publish.enable {
       description = "Publish the GNU Guix store";
+      environment = guixEnv;
       script = ''
         export GUIX_CONFIGURATION_DIRECTORY=$RUNTIME_DIRECTORY
-        ${guixWrapped}/bin/guix archive --authorize < \
+        guix archive --authorize < \
           ${cfg.package}/share/guix/ci.guix.gnu.org.pub
 
-        ${lib.concatStringsSep "\n"
-        (lib.mapAttrsToList (k: v: "export ${k}=${v}") guixEnv)}
         ROOT_PROFILE=$GUIX_STATE_DIRECTORY"/profiles/per-user/root/current-guix"
 
         DAEMON=$ROOT_PROFILE"/bin/guix"
