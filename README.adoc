@@ -31,7 +31,7 @@ Please see link:./flake.nix[`./flake.nix`] for more details.
 
 == Prerequisites
 
-You need Nix 2.4 and above to enable Nix flakes and the new command line interface.
+You need Nix 2.8 and above with the Nix flakes and the new command line interface enabled.
 To enable them, you need to add `experimental-features = nix-command flakes` from your Nix configuration (e.g., `/etc/nix/nix.conf`).
 
 Now, to add it in your flake configuration...
@@ -67,6 +67,20 @@ You can add Guix as a additional package or as an additional service to your Nix
 ----
 
 
+== Development guidelines
+
+Non-exhaustive list of guidelines when developing this project.
+
+* This project follows the link:https://semver.org/[Semantic Versioning] scheme for its stable version.
+
+* Follow the conventions in most NixOS modules from link:https://github.com/NixOS/nixpkgs/[nixpkgs] as of the appropriate version.
+
+* Keep in mind about the main nixpkgs branch to be followed.
+This is seen in link:./flake.nix[./flake.nix].
+
+* For other stable versions, this should be kept at a separate branch similar to how nixpkgs and link:https://github.com/nix-community/home-manager/[home-manager] does it.
+
+
 
 
 == Why fork it?
@@ -88,7 +102,7 @@ I don't want to miss out with another clunky virtual machine that is just furthe
 
 * [ ] Cleanup the codebase.
 ** [x] Cleanup the additional Guile modules.
-** [ ] Format with `nixfmt`.
+** [x] Format with `nixfmt`.
 
 * [x] Document the flake and its outputs.
 
