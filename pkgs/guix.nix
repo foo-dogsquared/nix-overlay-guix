@@ -1,7 +1,7 @@
 { stdenv
 , pkgs
 , lib
-, fetchurl
+, fetchgit
 , pkg-config
 , makeWrapper
 , guile_3_0
@@ -11,8 +11,16 @@
 , help2man
 , zlib
 , bzip2
+, autoconf-archive
+, autoreconfHook
+, graphviz
+, texinfo
+, locale
+, perlPackages
+, gettext
+, glibcLocalesUtf8
 , storeDir ? null
-, stateDir ? null
+, stateDir ? "/var"
 }:
 
 # We're using Guile 3.0 especially that 1.4.0 is nearing as of updating this
@@ -29,8 +37,6 @@ stdenv.mkDerivation rec {
 
   preAutoreconf = ''
     ./bootstrap
-    sed -i '/guilemoduledir\s*=/s%=.*%=''${out}/share/guile/site%' configure.ac
-    sed -i '/guileobjectdir\s*=/s%=.*%=''${out}/share/guile/ccache%' configure.ac
   '';
 
   # Take note all of the modules here should have Guile 3.x. If it's compiled
