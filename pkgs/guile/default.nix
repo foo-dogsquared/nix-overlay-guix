@@ -21,6 +21,7 @@ let
       guile-git = callPackage ./guile-git { };
       guile-json = callPackage ./guile-json { };
       guile-lzlib = callPackage ./guile-lzlib { };
+      guile-lzma = callPackage ./guile-lzma { };
       guile-semver = callPackage ./guile-semver { };
       guile-sqlite3 = callPackage ./guile-sqlite3 { };
       guile-ssh = callPackage ./guile-ssh { };
