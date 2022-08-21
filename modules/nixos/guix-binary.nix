@@ -14,11 +14,14 @@ let
   };
 
   guixBuildUsers = numberOfUsers:
-    builtins.listToAttrs (map (user: {
-      name = user.name;
-      value = user;
-    }) (builtins.genList guixBuildUser numberOfUsers));
-in {
+    builtins.listToAttrs (map
+      (user: {
+        name = user.name;
+        value = user;
+      })
+      (builtins.genList guixBuildUser numberOfUsers));
+in
+{
   options.services.guix-binary = with lib; {
     enable = lib.mkEnableOption
       "GNU Guix package manager with the binary installation";
