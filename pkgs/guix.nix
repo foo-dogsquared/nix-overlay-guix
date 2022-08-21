@@ -56,8 +56,6 @@ stdenv.mkDerivation rec {
     perlPackages.Po4a
   ] ++ modules;
 
-  nativeBuildInputs = [ pkg-config makeWrapper ];
-  buildInputs = [ zlib bzip2 git help2man ] ++ modules;
   propagatedBuildInputs = [ guile_3_0 ];
 
   # For more information, see the respective manual for Guile modules. We're
