@@ -1,4 +1,12 @@
-{ stdenv, lib, fetchurl, guile_3_0, libgcrypt, autoreconfHook, pkgconfig, texinfo, lzlib
+{ stdenv
+, lib
+, fetchurl
+, guile_3_0
+, libgcrypt
+, autoreconfHook
+, pkgconfig
+, texinfo
+, lzlib
 }:
 
 stdenv.mkDerivation rec {

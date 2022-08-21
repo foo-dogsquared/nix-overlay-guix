@@ -42,6 +42,6 @@ stdenv.mkDerivation rec {
     homepage = "https://www.gnu.org/software/guix/";
     license = lib.licenses.gpl3Plus;
     platforms = [ "aarch64-linux" "i686-linux" "x86_64-linux" ];
-    outputsToInstall = [];
+    outputsToInstall = [ ];
   };
 }

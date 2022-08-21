@@ -19,7 +19,8 @@ let
             sed -i '/godir\s*=/s%=.*%= ''${out}/share/guile/ccache%' src/Makefile;
           '';
         });
-    in {
+    in
+    {
       inherit guile-gnutls guile3-lib;
       bytestructures = callPackage ./bytestructures { };
       guile-avahi = callPackage ./guile-avahi { };
@@ -33,4 +34,5 @@ let
       guile-zlib = callPackage ./guile-zlib { };
       guile-zstd = callPackage ./guile-zstd { };
     };
-in lib.fix' (lib.extends overrides packages)
+in
+lib.fix' (lib.extends overrides packages)

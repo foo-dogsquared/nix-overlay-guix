@@ -34,7 +34,27 @@ stdenv.mkDerivation rec {
       guile-zlib
       guile-zstd
       guile3-lib
-    ] (m: m.out);
+    ]
+      (m: m.out);
+
+  nativeBuildInputs = [
+    pkg-config
+    makeWrapper
+    gettext
+    autoreconfHook
+  ];
+
+  buildInputs = [
+    zlib
+    bzip2
+    git
+    help2man
+    autoconf-archive
+    graphviz
+    texinfo
+    locale
+    perlPackages.Po4a
+  ] ++ modules;
 
   nativeBuildInputs = [ pkg-config makeWrapper ];
   buildInputs = [ zlib bzip2 git help2man ] ++ modules;
@@ -44,26 +64,34 @@ stdenv.mkDerivation rec {
   # also going to use this later on to wrap Guix with the resulting
   # environment.
   # TODO: Add module path to `$out/share/guile/site/${GUILE_VERSION}`.
-  GUILE_LOAD_PATH = let
-    guilePath = [
-      "\${out}/share/guile/site"
-    ] ++ (lib.concatMap (module: [
-      "${module}/share/guile/site"
-      "${module}/share/guile"
-      "${module}/share"
-    ]) modules);
-  in "${lib.concatStringsSep ":" guilePath}";
+  GUILE_LOAD_PATH =
+    let
+      guilePath = [
+        "\${out}/share/guile/site"
+      ] ++ (lib.concatMap
+        (module: [
+          "${module}/share/guile/site"
+          "${module}/share/guile"
+          "${module}/share"
+        ])
+        modules);
+    in
+    "${lib.concatStringsSep ":" guilePath}";
 
-  GUILE_LOAD_COMPILED_PATH = let
-    guilePath = [
-      "\${out}/share/guile/ccache"
-    ] ++ (lib.concatMap (module: [
-      "${module}/share/guile/ccache"
-      "${module}/share/guile/site" # Some Nix packages with Guile modules simply combine all of the outputs.
-      "${module}/share/guile" # If ever they put it there, I'm close to being crazy.
-      "${module}/share" # NOW, I'M CRAZY!
-    ]) modules);
-  in "${lib.concatStringsSep ":" guilePath}";
+  GUILE_LOAD_COMPILED_PATH =
+    let
+      guilePath = [
+        "\${out}/share/guile/ccache"
+      ] ++ (lib.concatMap
+        (module: [
+          "${module}/share/guile/ccache"
+          "${module}/share/guile/site" # Some Nix packages with Guile modules simply combine all of the outputs.
+          "${module}/share/guile" # If ever they put it there, I'm close to being crazy.
+          "${module}/share" # NOW, I'M CRAZY!
+        ])
+        modules);
+    in
+    "${lib.concatStringsSep ":" guilePath}";
 
   configureFlags = [ ]
     ++ lib.optional (storeDir != null) "--with-store-dir=${storeDir}"
