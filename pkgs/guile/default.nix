@@ -16,6 +16,7 @@ let
         guile = guile_3_0;
       };
       bytestructures = callPackage ./bytestructures { };
+      disarchive = callPackage ./disarchive { };
       guile3-lib = callPackage ./guile3-lib { };
       guile-avahi = callPackage ./guile-avahi { };
       guile-gcrypt = callPackage ./guile-gcrypt { };
