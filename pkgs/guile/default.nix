@@ -22,6 +22,9 @@ let
     in
     {
       inherit guile-gnutls guile3-lib;
+      buildGuileModule = callPackage ./build-guile-module.nix {
+        guile = guile_3_0;
+      };
       bytestructures = callPackage ./bytestructures { };
       guile-avahi = callPackage ./guile-avahi { };
       guile-gcrypt = callPackage ./guile-gcrypt { };
