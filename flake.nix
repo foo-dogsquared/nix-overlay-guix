@@ -15,9 +15,10 @@
           in
           rec {
             inherit (guilePackages)
+              disarchive
               guile-gnutls guile-gcrypt guile-git guile-json guile-sqlite3
               guile-lzlib guile-zlib guile-ssh guile-zstd guile-semver
-              guile-avahi guile3-lib;
+              guile-lzma guile-avahi guile3-lib;
             scheme-bytestructures = guilePackages.bytestructures;
 
             # Guix that comes in all flavors.
