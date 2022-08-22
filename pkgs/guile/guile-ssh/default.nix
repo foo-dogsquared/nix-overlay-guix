@@ -22,6 +22,15 @@ buildGuileModule rec {
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo which ];
   propagatedBuildInputs = [ libssh ];
 
+  configureFlags = [
+    "--disable-static"
+  ];
+
+  postInstall = ''
+    mv $out/bin/*.scm $out/share/guile-ssh
+    rmdir $out/bin
+  '';
+
   meta = with lib; {
     description = "Bindings to Libssh for GNU Guile";
     homepage = "https://github.com/artyom-poptsov/guile-ssh";
