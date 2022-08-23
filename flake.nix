@@ -47,10 +47,9 @@
             inherit system;
             overlays = [ self.overlays.default ];
           };
-        in
-        {
+        in {
           default = import ./shell.nix { inherit pkgs; };
-        } // (import ./shells { inherit pkgs; }));
+        });
 
       formatter = forAllSystems (system:
         let
