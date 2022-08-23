@@ -1,5 +1,25 @@
-{ stdenv, pkgs, lib, fetchgit, pkg-config, makeWrapper, guile_3_0, guile-lib, git
-, guilePackages, help2man, zlib, bzip2, storeDir ? null, stateDir ? null }:
+{ stdenv
+, pkgs
+, lib
+, fetchgit
+, pkg-config
+, makeWrapper
+, guile_3_0
+, guile-lib
+, git
+, guilePackages
+, help2man
+, zlib
+, bzip2
+, autoconf-archive
+, autoreconfHook
+, graphviz
+, texinfo
+, locale
+, perlPackages
+, gettext
+, glibcLocales
+}:
 
 # We're using Guile 3.0 especially that 1.4.0 is nearing as of updating this
 # package definition.
@@ -13,9 +33,8 @@ stdenv.mkDerivation rec {
     sha256 = "sha256-P2VLyfE+Ft+HwCnJR6eVROgHYwlLEvHMW0ME5o2KNY0=";
   };
 
-  postConfigure = ''
-    sed -i '/guilemoduledir\s*=/s%=.*%=''${out}/share/guile/site%' Makefile;
-    sed -i '/guileobjectdir\s*=/s%=.*%=''${out}/share/guile/ccache%' Makefile;
+  preAutoreconf = ''
+    ./bootstrap
   '';
 
   # Take note all of the modules here should have Guile 3.x. If it's compiled
@@ -40,6 +59,7 @@ stdenv.mkDerivation rec {
 
   nativeBuildInputs = [
     pkg-config
+    glibcLocales
     makeWrapper
     gettext
     autoreconfHook
@@ -62,7 +82,6 @@ stdenv.mkDerivation rec {
   # For more information, see the respective manual for Guile modules. We're
   # also going to use this later on to wrap Guix with the resulting
   # environment.
-  # TODO: Add module path to `$out/share/guile/site/${GUILE_VERSION}`.
   GUILE_LOAD_PATH =
     let
       guilePath = [
@@ -92,10 +111,6 @@ stdenv.mkDerivation rec {
     in
     "${lib.concatStringsSep ":" guilePath}";
 
-  configureFlags = [ ]
-    ++ lib.optional (storeDir != null) "--with-store-dir=${storeDir}"
-    ++ lib.optional (stateDir != null) "--localstatedir=${stateDir}";
-
   postInstall = ''
     wrapProgram $out/bin/guix \
       --prefix GUILE_LOAD_PATH : "${GUILE_LOAD_PATH}" \
@@ -107,6 +122,10 @@ stdenv.mkDerivation rec {
   '';
 
   passthru = { inherit guile_3_0; };
+
+  configureFlags = [
+    "--localstatedir=/var"
+  ];
 
   meta = with lib; {
     description =
