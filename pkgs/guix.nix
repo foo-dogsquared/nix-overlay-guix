@@ -5,6 +5,7 @@
 , makeWrapper
 , help2man
 , bzip2
+, gzip
 , autoconf-archive
 , autoreconfHook
 , texinfo
@@ -12,15 +13,21 @@
 , perlPackages
 , gettext
 , glibcLocales
+
+, stateDir ? "/var"
+, storeDir ? "/gnu/store"
 }:
 
+let
+  rev = "59ee837d8b11d7d688045b601e8b240ccbdbe7c7";
+in
 guilePackages.buildGuileModule rec {
   pname = "guix";
   version = "unstable-2022-08-22";
 
   src = fetchgit {
+    inherit rev;
     url = "https://git.savannah.gnu.org/git/guix.git";
-    rev = "59ee837d8b11d7d688045b601e8b240ccbdbe7c7";
     sha256 = "sha256-P2VLyfE+Ft+HwCnJR6eVROgHYwlLEvHMW0ME5o2KNY0=";
   };
 
@@ -29,6 +36,9 @@ guilePackages.buildGuileModule rec {
   '';
 
   propagatedBuildInputs = with guilePackages; [
+    # !!! Why disarchive can't build?
+    #disarchive
+    guile-lzma
     bytestructures
     guile-avahi
     guile-gcrypt
@@ -42,6 +52,9 @@ guilePackages.buildGuileModule rec {
     guile-zlib
     guile-zstd
     guile3-lib
+  ] ++ [
+    gzip
+    bzip2
   ];
 
   nativeBuildInputs = [
@@ -53,7 +66,6 @@ guilePackages.buildGuileModule rec {
   ];
 
   buildInputs = [
-    bzip2
     help2man
     autoconf-archive
     texinfo
@@ -62,8 +74,18 @@ guilePackages.buildGuileModule rec {
   ];
 
   configureFlags = [
-    "--localstatedir=/var"
+    "--with-store-dir=${storeDir}"
+    "--localstatedir=${stateDir}"
+    "--with-channel-commit=${rev}"
+    "--sysconfdir=/etc"
+    "--with-bash-completion-dir=${placeholder "out"}/etc/bash_completion.d"
   ];
+
+  postPatch = ''
+    sed nix/local.mk -i -E \
+      -e 's|^sysvinitservicedir = .*$|sysvinitservicedir = ${placeholder "out"}/etc/init.d|' \
+      -e 's|^openrcservicedir = .*$|openrcservicedir = ${placeholder "out"}/etc/openrc|'
+  '';
 
   meta = with lib; {
     description =
