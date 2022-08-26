@@ -50,18 +50,34 @@ nixpkgs.overlays = [
 ];
 ----
 
-You can add Guix as a additional package or as an additional service to your NixOS systems.
+This project also has a binary cache available in case you want to speed up your installation.
 
 [source, nix]
 ----
-# configuration.nix
 {
-  # ...the rest of your NixOS system config.
+  nix.settings = {
+    substituters = [ "https://foo-dogsquared.cachix.org" ];
+    trusted-public-keys = [ "foo-dogsquared.cachix.org-1:/2fmqn/gLGvCs5EDeQmqwtus02TUmGy0ZlAEXqRE70E=" ];
+  };
+}
+----
 
-　# Enabling the Guix daemon and the package manager in your system.
+You can now add Guix as a additional package to your NixOS system.
+Though, there is a NixOS module that already sets up most of the things to make Guix work with NixOS nicely.
+
+[source, nix]
+----
+{
+  imports = [
+    inputs.guix-overlay.nixosModules.guix
+  ];
+
+　# Enabling the Guix daemon and install the package manager in your system.
   services.guix.enable = true;
 }
 ----
+
+
 
 
 == Development guidelines
@@ -97,14 +113,13 @@ I don't want to miss out with another clunky virtual machine that is just furthe
 
 === TODO
 
-* [ ] Cleanup the codebase.
+* [x] Cleanup the codebase.
 ** [x] Cleanup the additional Guile modules.
 ** [x] Format with `nixfmt`.
 
 * [x] Document the flake and its outputs.
 
-* [ ] Make it compatible with the traditional `default.nix`.
-** [ ] Use link:https://github.com/edolstra/flake-compat[this module].
+* [ ] Make it easy to use if installed with traditional channels.
 
 * [x] Cache the package set of this project.
 
@@ -113,19 +128,3 @@ I don't want to miss out with another clunky virtual machine that is just furthe
 * [x] Create packages for Guix with the binary installation.
 ** [ ] Create the binary installation with various versions just for fun ;p
 ** [ ] Make the same with Nix-built Guix with offering the various versions.
-
-
-=== Issues
-
-The biggest issue is the Nix-built Guix won't use substitutes.
-(IT'S A SECRET AMBUSH FROM THE NIX COMMUNITY SO THAT GUIX WON'T SUCCEED BY MAKING IT UNUSABLE WHEN USED INSIDE NIXOS! footnote:[That or I'm just incompetent at making this work.])
-Most of the functionalities are fine and working — it can build packages from source, add them to the store, resolve dependencies, and does Guix things... except use the substitutes itself which hinders most of the usability.
-
-For more information, see link:https://github.com/bqv/guix/issues/2[this issue from the original repo] which highlights similar experiences.
-I've tested with the same methods from the linked issue: with different store directory and configuring the environment.
-Even went to install Guix through Guix (which can take another few hours to take especially from SCRATCH!).
-None of them worked so far.
-
-In the mean time, I'll try to keep the package updated especially with the upcoming release of v1.4.0 (as of 2022-01-20).
-In the end, I took the lazy route of installing with the binary installation (I'm sorry >_<).
-I also made a package for Guix with the binary installations (but it is practically useless without using the link:./modules/nixos/guix-binary.nix[appropriate NixOS module]).
