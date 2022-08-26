@@ -1,4 +1,4 @@
-{ lib, newScope, guile_3_0, gnutls, guile-lib, overrides ? (self: super: { }) }:
+{ lib, newScope, guile_3_0, gnutls, lzlib, guile-lib, overrides ? (self: super: { }) }:
 
 let
   packages = self:
@@ -9,6 +9,12 @@ let
       guile-gnutls = (gnutls.override {
         inherit guile;
         guileBindings = true;
+      });
+
+      lzlibShared = lzlib.overrideAttrs (prev: {
+        configureFlags = [
+          "--enable-shared"
+        ];
       });
     in
     {
@@ -21,7 +27,7 @@ let
       guile-gcrypt = callPackage ./guile-gcrypt { };
       guile-git = callPackage ./guile-git { };
       guile-json = callPackage ./guile-json { };
-      guile-lzlib = callPackage ./guile-lzlib { };
+      guile-lzlib = callPackage ./guile-lzlib { lzlib = lzlibShared; };
       guile-lzma = callPackage ./guile-lzma { };
       guile-semver = callPackage ./guile-semver { };
       guile-sqlite3 = callPackage ./guile-sqlite3 { };
