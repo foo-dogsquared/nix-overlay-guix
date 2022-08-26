@@ -6,15 +6,14 @@
 , passthru ? {}, meta ? {}, ... } @ args:
 
 let
-  modules = propagatedNativeBuildInputs ++ propagatedBuildInputs;
   guileVersion = lib.versions.majorMinor guile.version;
 in
 stdenv.mkDerivation (args // {
-  inherit nativeBuildInputs propagatedBuildInputs guileVersion;
+  inherit propagatedNativeBuildInputs propagatedBuildInputs guileVersion;
 
   setupHook = ./setup-hook.sh;
   buildInputs = [ makeWrapper ] ++ buildInputs;
-  propagatedNativeBuildInputs = [ guile ] ++ propagatedNativeBuildInputs;
+  nativeBuildInputs = [ guile ] ++ nativeBuildInputs;
 
   passthru = passthru // { inherit guile; };
 
