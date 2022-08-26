@@ -11,6 +11,8 @@ buildGuileModule rec {
 
   nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
   propagatedBuildInputs = [ libgcrypt ];
+  doCheck = true;
+  makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
 
   meta = with lib; {
     description = "Bindings to Libgcrypt for GNU Guile";

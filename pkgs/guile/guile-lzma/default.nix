@@ -9,6 +9,7 @@ buildGuileModule rec {
     sha256 = "sha256-K4ZoltZy7U05AI9LUzZ1DXiXVgoGZ4Nl9cWnK9L8zl4=";
   };
 
+  doCheck = true;
   nativeBuildInputs = [
     pkg-config
     bytestructures

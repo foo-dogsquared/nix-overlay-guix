@@ -12,6 +12,8 @@ buildGuileModule rec {
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
   propagatedBuildInputs = [ sqlite ];
+  doCheck = true;
+  makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
 
   meta = with lib; {
     description = "Bindings to Sqlite3 for GNU Guile";

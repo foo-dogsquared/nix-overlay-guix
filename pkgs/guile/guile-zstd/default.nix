@@ -19,6 +19,8 @@ buildGuileModule rec {
 
   nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
   propagatedBuildInputs = [ zstd ];
+  doCheck = true;
+  makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
 
   meta = with lib; {
     description =

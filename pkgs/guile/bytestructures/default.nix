@@ -11,6 +11,9 @@ buildGuileModule rec {
     sha256 = "sha256-04oDvwvzTRzAVyywbcCm3Ug3p3xNbxjI7nOKYakEZZI=";
   };
 
+  makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
+
+  doCheck = true;
   nativeBuildInputs = [ autoreconfHook pkg-config ];
 
   meta = with lib; {

@@ -10,6 +10,8 @@ buildGuileModule rec {
   };
 
   nativeBuildInputs = [ pkg-config texinfo ];
+  doCheck = true;
+  makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
 
   meta = with lib; {
     description = "JSON Bindings for GNU Guile";

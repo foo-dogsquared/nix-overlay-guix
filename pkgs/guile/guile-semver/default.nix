@@ -10,6 +10,7 @@ buildGuileModule rec {
   };
 
   nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
+  doCheck = true;
 
   meta = with lib; {
     description =

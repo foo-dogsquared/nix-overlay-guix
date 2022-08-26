@@ -13,18 +13,26 @@ buildGuileModule rec {
   version = "0.0.2";
 
   src = fetchurl {
-    url = "https://notabug.org/guile-lzlib/${pname}/archive/${version}.tar.gz";
+    url = "https://notabug.org/guile-lzlib/guile-lzlib/archive/${version}.tar.gz";
     sha256 = "sha256-hiPbd9RH57n/v8vCiDkOcGprGomxFx2u1gh0z+x+T4c=";
   };
 
   nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
   propagatedBuildInputs = [ lzlib ];
 
+  makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
+  doCheck = true;
+
+  postPatch = ''
+    substituteInPlace configure.ac \
+      --replace 'LIBLZ_LIBDIR="liblz"' 'LIBLZ_LIBDIR="${lzlib}/lib/liblz"'
+  '';
+
   meta = with lib; {
     description =
       "Guile-lzlib is a GNU Guile library providing bindings to lzlib";
     homepage = "https://notabug.org/guile-lzlib/guile-lzlib";
-    # license = licenses.gpl3;
+    license = licenses.gpl3;
     maintainers = with maintainers; [ foo-dogsquared ];
   };
 }

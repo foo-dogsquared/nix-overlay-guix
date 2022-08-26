@@ -19,8 +19,16 @@ buildGuileModule rec {
     sha256 = "sha256-x6apF9fmwzrkyzAexKjClOTFrbE31+fVhSLyFZkKRYU=";
   };
 
+  doCheck = true;
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
   propagatedBuildInputs = [ libgit2 bytestructures ];
+
+  # Skipping proxy tests since it requires network access.
+  postPatch = ''
+    sed -i -e '94i (test-skip 1)' ./tests/proxy.scm
+  '';
+
+  makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
 
   meta = with lib; {
     description = "Bindings to Libgit2 for GNU Guile";
