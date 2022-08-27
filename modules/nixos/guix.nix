@@ -115,7 +115,6 @@ in
     systemd.services.guix-daemon = {
       description = "Build daemon for GNU Guix";
       environment = guixEnv;
-      path = [ cfg.package ];
       script = ''
         if [ ! -x "$DAEMON" ]; then
           DAEMON="${cfg.package}/bin/guix-daemon"
@@ -139,10 +138,9 @@ in
     systemd.services.guix-publish = lib.mkIf cfg.publish.enable {
       description = "Publish the GNU Guix store";
       environment = guixEnv;
-      path = [ cfg.package ];
       script = ''
         if [ ! -x "$DAEMON" ]; then
-          DAEMON="${cfg.package}/bin/guix"
+          DAEMON="${cfg.package}/bin/guix-daemon"
           GUIX_LOCPATH="${pkgs.glibcLocales}/lib/locale"
         fi
 
