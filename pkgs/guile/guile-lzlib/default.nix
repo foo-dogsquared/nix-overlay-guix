@@ -23,11 +23,6 @@ buildGuileModule rec {
   makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
   doCheck = true;
 
-  postPatch = ''
-    substituteInPlace configure.ac \
-      --replace 'LIBLZ_LIBDIR="liblz"' 'LIBLZ_LIBDIR="${lzlib}/lib/liblz"'
-  '';
-
   meta = with lib; {
     description =
       "Guile-lzlib is a GNU Guile library providing bindings to lzlib";
