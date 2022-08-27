@@ -17,7 +17,7 @@ let
         ];
       });
     in
-    {
+    lib.recurseIntoAttrs {
       inherit guile-gnutls;
       buildGuileModule = callPackage ./build-guile-module.nix { inherit guile; };
       bytestructures = callPackage ./bytestructures { };
