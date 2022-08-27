@@ -26,12 +26,39 @@ Please see link:./flake.nix[`./flake.nix`] for more details.
 
 
 
-== Prerequisites
 
-You need Nix 2.8 and above with the Nix flakes and the new command line interface enabled.
-To enable them, you need to add `experimental-features = nix-command flakes` from your Nix configuration (e.g., `/etc/nix/nix.conf`).
+== Getting started
 
-Now, to add it in your flake configuration...
+Some prerequisites:
+
+* You need NixOS installed, of course.
+The minimum version required is at least 22.05.
+Whether or not this works at unstable branches is a game of gamble and only minimally tested.
+
+* If you have Nix with flakes experimental feature enabled, you need Nix 2.8 and above as well with the new command line interface enabled (i.e., `experimental-features = nix-command flakes` from your Nix configuration).
+
+This project also has a binary cache available in case you want to speed up your installation.
+
+Here's one way to set it up in your NixOS configuration.
+
+[source, nix]
+----
+{
+  nix.settings = {
+    substituters = [ "https://foo-dogsquared.cachix.org" ];
+    trusted-public-keys = [ "foo-dogsquared.cachix.org-1:/2fmqn/gLGvCs5EDeQmqwtus02TUmGy0ZlAEXqRE70E=" ];
+  };
+}
+----
+
+Or you can use `cachix use foo-dogsquared` if you have link:https://www.cachix.org/[cachix] installed.
+
+
+=== Using with Nix flakes
+
+This is the recommended installation method.
+
+Now, add it in your flake configuration...
 
 [source, nix]
 ----
@@ -50,18 +77,6 @@ nixpkgs.overlays = [
 ];
 ----
 
-This project also has a binary cache available in case you want to speed up your installation.
-
-[source, nix]
-----
-{
-  nix.settings = {
-    substituters = [ "https://foo-dogsquared.cachix.org" ];
-    trusted-public-keys = [ "foo-dogsquared.cachix.org-1:/2fmqn/gLGvCs5EDeQmqwtus02TUmGy0ZlAEXqRE70E=" ];
-  };
-}
-----
-
 You can now add Guix as a additional package to your NixOS system.
 Though, there is a NixOS module that already sets up most of the things to make Guix work with NixOS nicely.
 
@@ -73,6 +88,44 @@ Though, there is a NixOS module that already sets up most of the things to make 
   ];
 
 　# Enabling the Guix daemon and install the package manager in your system.
+  services.guix.enable = true;
+}
+----
+
+
+=== Using with channels
+
+This project tries to be easy to use with link:https://nixos.org/manual/nix/unstable/package-management/channels.html[Nix channels] but it is not there yet.
+Though, I recommend using something like link:https://github.com/nmattia/niv[niv] to ease channel management (i.e., `niv add foo-dogsquared/nix-overlay-guix`).
+
+For now, you'll have to keep in mind about the requirements of this being supporting mainly NixOS 22.05.
+
+As root, add the project as part of the channel list.
+
+[source, shell]
+----
+nix-channel --add https://github.com/foo-dogsquared/nix-overlay-guix/archive/master.tar.gz guix-overlay
+nix-channel --update
+----
+
+In your NixOS configuration, you have to add the Guix package set as an overlay.
+
+[source, nix]
+----
+nixpkgs.overlays = [
+  (final: prev: import <guix-overlay/pkgs> { pkgs = prev; })
+];
+----
+
+Now, import the NixOS module and enable the imported service.
+
+[source, nix]
+----
+{
+  imports = [
+    <guix-overlay/modules/nixos/guix.nix>
+  ];
+
   services.guix.enable = true;
 }
 ----
@@ -119,7 +172,8 @@ I don't want to miss out with another clunky virtual machine that is just furthe
 
 * [x] Document the flake and its outputs.
 
-* [ ] Make it easy to use if installed with traditional channels.
+* [x] Make it easy to use if installed with traditional channels.
+Or at least document it.
 
 * [x] Cache the package set of this project.
 
