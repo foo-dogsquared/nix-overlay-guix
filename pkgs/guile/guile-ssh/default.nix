@@ -1,6 +1,7 @@
 { buildGuileModule
 , lib
 , fetchFromGitHub
+, fetchpatch
 , libssh
 , autoreconfHook
 , pkg-config
@@ -21,11 +22,14 @@ buildGuileModule rec {
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo which ];
   propagatedBuildInputs = [ libssh ];
-
-  configureFlags = [
-    "--disable-static"
+  patches = [
+    (fetchpatch {
+      url = "https://github.com/artyom-poptsov/guile-ssh/pull/31.patch";
+      sha256 = "sha256-J+TDgdjihKoEjhbeH+BzqrHhjpVlGdscRj3L/GAFgKg=";
+    })
   ];
 
+  doCheck = true;
   postInstall = ''
     mv $out/bin/*.scm $out/share/guile-ssh
     rmdir $out/bin
