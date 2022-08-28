@@ -3,8 +3,8 @@
 # Much of the code is based from Python's setup hooks.
 guileWrapperArgs=()
 
-guilePreFixupPhase() {
-    local dir="$out/bin"
+addGuileWrapperArgs() {
+    local dir="$1"
 
     if test ! -d "$dir" ; then return; fi
 
@@ -22,24 +22,24 @@ guilePreFixupPhase() {
 }
 
 addGuileLibPath() {
-    for load_compiled_path in "$1/share/guile/site/"{$guileVersion,}; do
+    local dir="$1"
+
+    for load_compiled_path in "$dir/share/guile/site/"{$guileVersion,}; do
         if test -d "$load_compiled_path"; then
             addToSearchPath GUILE_LOAD_PATH "$load_compiled_path"
             break
         fi
     done
 
-    for load_path in "$1/lib/guile/$guileVersion/"{,site-}ccache; do
+    for load_path in "$dir/lib/guile/$guileVersion/"{,site-}ccache; do
         if test -d "$load_path"; then
             addToSearchPath GUILE_LOAD_COMPILED_PATH "$load_path"
             break
         fi
     done
 
-    if test -d "$1/lib/guile/$guileVersion/extensions"; then
+    if test -d "$dir/lib/guile/$guileVersion/extensions"; then
         addToSearchPath GUILE_EXTENSIONS_PATH "$1/lib/guile/$guileVersion/extensions"
-    elif test -d "$1/lib" ; then
-        addToSearchPath GUILE_EXTENSIONS_PATH "$1/lib"
     fi
 }
 
@@ -61,6 +61,8 @@ wrapGuileModuleHook() {
     local targetDirs=("${prefix}/bin" "${prefix}/libexec")
     echo "Wrapping program in ${targetDirs[@]}"
 
+    addGuileWrapperArgs "$out/bin"
+
     for targetDir in "${targetDirs[@]}"; do
         test -d "$targetDir" || continue
         find "$targetDir" ! -type d -executable -print0 | while IFS= read -r -d "" f; do
@@ -78,5 +80,4 @@ wrapGuileModuleHook() {
 
 addEnvHooks "$hostOffset" addGuileLibPath
 
-preFixupPhases+=" guilePreFixupPhase"
 fixupOutputHooks+=(wrapGuileModuleHook)
