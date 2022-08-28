@@ -89,7 +89,7 @@ in
       enable = mkEnableOption "substitute server for your Guix store directory";
 
       port = mkOption {
-        type = types.int;
+        type = types.port;
         default = 8181;
         description = ''
           Port of the substitute server to listen to.

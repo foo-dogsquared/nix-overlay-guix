@@ -68,7 +68,7 @@ in
       };
 
       port = mkOption {
-        type = types.int;
+        type = types.port;
         default = 8181;
         example = 9001;
         description = "Port to publish the Guix store.";
