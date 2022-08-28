@@ -73,6 +73,17 @@ in
         example = 9001;
         description = "Port to publish the Guix store.";
       };
+
+      extraArgs = mkOption {
+        type = with types; listOf str;
+        description = ''
+          Extra flags to pass to the substitute server.
+        '';
+        default = [];
+        example = lib.literalExpression ''
+          [ "--compression=zstd:6" "--repl" ]
+        '';
+      };
     };
   };
 
@@ -109,7 +120,7 @@ in
       description = "Publish the GNU Guix store";
       serviceConfig = {
         ExecStart = ''
-          /var/guix/profiles/per-user/root/current-guix/bin/guix publish --user=${lib.escapeShellArg cfg.publish.user} --port=${lib.escapeShellArg cfg.publish.port}
+          /var/guix/profiles/per-user/root/current-guix/bin/guix publish --user=${lib.escapeShellArg cfg.publish.user} --port=${lib.escapeShellArg cfg.publish.port} ${lib.escapeShellArgs cfg.publish.extraArgs}
         '';
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /gnu/store";
         RemainAfterExit = "yes";

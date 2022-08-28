@@ -101,6 +101,15 @@ in
         default = "nobody";
         description = ''
           User to publish the guix store with.
+
+      extraArgs = mkOption {
+        type = with types; listOf str;
+        description = ''
+          Extra flags to pass to the substitute server.
+        '';
+        default = [];
+        example = lib.literalExpression ''
+          [ "--compression=zstd:6" "--repl" ]
         '';
       };
     };
@@ -144,7 +153,9 @@ in
           GUIX_LOCPATH="${pkgs.glibcLocales}/lib/locale"
         fi
 
-        exec $DAEMON publish --user=${cfg.publish.user} --port=${cfg.publish.port}
+        exec $DAEMON publish --user=${cfg.publish.user} --port=${cfg.publish.port} ${
+          lib.escapeShellArgs cfg.publish.extraArgs
+        }
       '';
       serviceConfig = {
         RemainAfterExit = "yes";
