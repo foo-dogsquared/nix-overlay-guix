@@ -3,6 +3,9 @@
 # Much of the code is based from Python's setup hooks.
 guileWrapperArgs=()
 
+# This is usually called before wrapping up an output directory. Take note it
+# accepts a directory to check before adding the wrapper arguments. We're
+# usually checking for $out/bin.
 addGuileWrapperArgs() {
     local dir="$1"
 
@@ -21,6 +24,9 @@ addGuileWrapperArgs() {
     fi
 }
 
+# A replacement for Guile setup hooks from nixpkgs. Seems like the Guile
+# extensions is not properly set up yet so we'll have to craft our own solution
+# for now.
 addGuileLibPath() {
     local dir="$1"
 
@@ -43,12 +49,15 @@ addGuileLibPath() {
     fi
 }
 
+# A helper function for wrapping up a program. Usually called in fixup phase.
 wrapGuileModule() {
     local program="$1"
     shift 1
     wrapProgram "$program" ${guileWrapperArgs[@]} ${makeWrapperArgs[@]}
 }
 
+# The main function for creating a wrapped version of the executables when
+# using the associated wrapper function.
 wrapGuileModuleHook() {
     # Skip this hook when requested.
     test -z "${dontWrapGuileModules}" || return 0
@@ -61,6 +70,7 @@ wrapGuileModuleHook() {
     local targetDirs=("${prefix}/bin" "${prefix}/libexec")
     echo "Wrapping program in ${targetDirs[@]}"
 
+    # Without this, the hook will essentially do nothing.
     addGuileWrapperArgs "$out/bin"
 
     for targetDir in "${targetDirs[@]}"; do
@@ -78,6 +88,11 @@ wrapGuileModuleHook() {
     done
 }
 
+# Attaching adding Guile search paths to an env hook. This is done on all of
+# the nodes on the dependency graph. For more information, see
+# `pkgs/stdenv/generic/setup.sh`.
 addEnvHooks "$hostOffset" addGuileLibPath
 
+# We want to wrap the program while in fixup phase so we're adding it as one of
+# the output hooks. This is also defined in `pkgs/stdenv/generic/setup.sh`.
 fixupOutputHooks+=(wrapGuileModuleHook)
