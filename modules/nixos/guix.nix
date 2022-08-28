@@ -139,8 +139,8 @@ in
       '';
       serviceConfig = {
         RemainAfterExit = "yes";
-        StandardOutput = "syslog";
-        StandardError = "syslog";
+        StandardOutput = "journal";
+        StandardError = "journal";
         TasksMax =
           8192; # See <https://lists.gnu.org/archive/html/guix-devel/2016-04/msg00608.html>.
       };
@@ -162,8 +162,8 @@ in
       '';
       serviceConfig = {
         RemainAfterExit = "yes";
-        StandardOutput = "syslog";
-        StandardError = "syslog";
+        StandardOutput = "journal";
+        StandardError = "journal";
         TasksMax =
           1024; # See <https://lists.gnu.org/archive/html/guix-devel/2016-04/msg00608.html>.
       };

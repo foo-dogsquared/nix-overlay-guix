@@ -106,6 +106,8 @@ in
           "GUIX_LOCPATH=/var/guix/profiles/per-user/root/guix-profile/lib/locale"
           "LC_ALL=en_US.utf8"
         ];
+        StandardOutput = "journal";
+        StandardError = "journal";
         RemainAfterExit = "yes";
 
         # See <https://lists.gnu.org/archive/html/guix-devel/2016-04/msg00608.html>.
@@ -124,8 +126,8 @@ in
         '';
         ExecStartPre = "${pkgs.coreutils}/bin/mkdir -p /gnu/store";
         RemainAfterExit = "yes";
-        StandardOutput = "syslog";
-        StandardError = "syslog";
+        StandardOutput = "journal";
+        StandardError = "journal";
         TasksMax =
           1024; # See <https://lists.gnu.org/archive/html/guix-devel/2016-04/msg00608.html>.
       };
