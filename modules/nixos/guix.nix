@@ -32,14 +32,14 @@ let
 in
 {
   options.services.guix = with lib; {
-    enable = mkEnableOption "the guix daemon and init /gnu/store";
+    enable = mkEnableOption "the Guix daemon service";
 
     group = mkOption {
       type = types.str;
       default = "guixbuild";
       example = "guixbuild";
       description = ''
-        The group of the guix build users.
+        The group of the Guix build user pool.
       '';
     };
 
@@ -48,7 +48,7 @@ in
       default = "guixbuilder";
       example = "guixbuilder";
       description = ''
-        The common prefix of the guix build users.
+        The name prefix for the Guix build user pool.
       '';
     };
 
@@ -57,7 +57,7 @@ in
       default = [ ];
       example = [ "--max-jobs=4" "--debug" ];
       description = ''
-        Extra flags to pass to the guix daemon.
+        Extra flags to pass to the Guix daemon service.
       '';
     };
 
@@ -86,21 +86,24 @@ in
     };
 
     publish = {
-      enable = mkEnableOption "publishing the guix store";
+      enable = mkEnableOption "substitute server for your Guix store directory";
 
       port = mkOption {
         type = types.int;
         default = 8181;
         description = ''
-          Port to publish the guix store on.
+          Port of the substitute server to listen to.
         '';
       };
 
       user = mkOption {
         type = types.str;
         default = "nobody";
+        defaultText = "nobody";
         description = ''
-          User to publish the guix store with.
+          Name of the user to change once the server is up.
+        '';
+      };
 
       extraArgs = mkOption {
         type = with types; listOf str;
