@@ -3,6 +3,11 @@ on: push
 jobs:
   build:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        nixpkgs-branch:
+          - nixos-unstable
+          - nixos-22.05
     steps:
       - uses: actions/checkout@v2
       - uses: cachix/install-nix-action@v17
@@ -18,5 +23,5 @@ jobs:
           authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
           pushFilter: "guix-binary"
       - name: Build custom packages
-        run: nix build --file ./ci.nix
+        run: nix build --file ./ci.nix --override-input nixpkgs github:NixOS/nixpkgs/${{ matrix.nix-channel }}
         continue-on-error: true
