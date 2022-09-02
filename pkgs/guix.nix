@@ -14,6 +14,7 @@
 , gettext
 , glibcLocales
 
+, confDir ? "/etc"
 , stateDir ? "/var"
 , storeDir ? "/gnu/store"
 }:
@@ -77,7 +78,7 @@ guilePackages.buildGuileModule rec {
     "--with-store-dir=${storeDir}"
     "--localstatedir=${stateDir}"
     "--with-channel-commit=${rev}"
-    "--sysconfdir=/etc"
+    "--sysconfdir=${confDir}"
     "--with-bash-completion-dir=${placeholder "out"}/etc/bash_completion.d"
   ];
 
@@ -85,6 +86,17 @@ guilePackages.buildGuileModule rec {
     sed nix/local.mk -i -E \
       -e 's|^sysvinitservicedir = .*$|sysvinitservicedir = ${placeholder "out"}/etc/init.d|' \
       -e 's|^openrcservicedir = .*$|openrcservicedir = ${placeholder "out"}/etc/openrc|'
+  '';
+
+  # We will start to look into checking once the dependencies are properly installed.
+  doCheck = true;
+
+  doInstallCheck = true;
+  installCheckPhase = ''
+    runHook $preInstallCheck
+    $out/bin/guix --version > /dev/null
+    $out/bin/guix-daemon --version > /dev/null
+    runHook $postInstallCheck
   '';
 
   meta = with lib; {
