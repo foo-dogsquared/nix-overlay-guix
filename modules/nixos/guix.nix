@@ -3,7 +3,7 @@
 let
   cfg = config.services.guix;
 
-  package = cfg.package.override { storeDir = cfg.storeDir; };
+  package = cfg.package.override (with cfg; { inherit stateDir storeDir; });
 
   guixBuildUser = id: {
     group = cfg.group;
@@ -24,7 +24,7 @@ let
       (builtins.genList guixBuildUser numberOfUsers));
 
   guixEnv = rec {
-    ROOT_PROFILE = "/var/guix/profiles/per-user/root/current-guix";
+    ROOT_PROFILE = "${cfg.stateDir}/profiles/per-user/root/current-guix";
     DAEMON = "${ROOT_PROFILE}/bin/guix-daemon";
     GUIX_LOCPATH = "${ROOT_PROFILE}/lib/locale";
     LC_ALL = "en_US.utf8";
@@ -83,6 +83,19 @@ in
         This will also recompile the package with the specified option so you
         better have a good reason to do so.
       '';
+    };
+
+    stateDir = mkOption {
+      type = types.str;
+      default = "/var";
+      defaultText = "/var";
+      description = ''
+        The state directory where Guix service will store its data such as its
+        user-specific profiles, cache, and state files.
+
+        Changing it other than the default will rebuild the package.
+      '';
+      example = "/gnu/var";
     };
 
     publish = {
