@@ -165,7 +165,7 @@ in
       # guix archive --authorize < ~root/.config/guix/current/share/guix/bordeaux.guix.gnu.org.pub
     '';
 
-    environment.profiles = [
+    environment.profiles = lib.mkBefore [
       "$HOME/.config/guix/current"
       "$HOME/.guix-profile"
       "/var/guix/profiles/per-user/root/current-guix"

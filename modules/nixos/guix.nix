@@ -12,7 +12,6 @@ let
     createHome = false;
     description = "Guix build user ${toString id}";
     isSystemUser = true;
-    shell = pkgs.shadow;
   };
 
   guixBuildUsers = numberOfUsers:
@@ -76,9 +75,9 @@ in
       defaultText = "/gnu/store";
       description = ''
         The store directory where the Guix service will serve to/from. Take
-        note Guix cannot take advantage of substitutes if you set it elsewhere
-        since most of the cached builds are assumed in
-        <literal>/gnu/store<literal>.
+        note Guix cannot take advantage of substitutes if you set it other than
+        <literal>/gnu/store</literal> since most of the cached builds are
+        assumed in there.
 
         This will also recompile the package with the specified option so you
         better have a good reason to do so.
@@ -135,7 +134,7 @@ in
     environment.systemPackages = [ package ];
 
     users.users = guixBuildUsers 10;
-    users.groups = { "${cfg.group}" = { }; };
+    users.groups."${cfg.group}" = { };
 
     systemd.services.guix-daemon = {
       description = "Build daemon for GNU Guix";
@@ -188,7 +187,11 @@ in
         ${cfg.package}/share/guix/ci.guix.gnu.org.pub
     '';
 
-    environment.profiles = [
+    # What Guix profiles export is very similar to Nix profiles so it is
+    # acceptable to list it here. Also, it is more likely that the user would
+    # want to use packages explicitly installed from Guix so we're putting it
+    # first.
+    environment.profiles = lib.mkBefore [
       "$HOME/.config/guix/current"
       "$HOME/.guix-profile"
       guixEnv.ROOT_PROFILE
