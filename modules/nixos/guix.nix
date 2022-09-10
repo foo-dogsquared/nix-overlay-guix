@@ -141,7 +141,7 @@ in
       environment = guixEnv;
       script = ''
         if [ ! -x "$DAEMON" ]; then
-          DAEMON="${cfg.package}/bin/guix-daemon"
+          DAEMON="${package}/bin/guix-daemon"
           GUIX_LOCPATH="${pkgs.glibcLocales}/lib/locale"
         fi
 
@@ -164,7 +164,7 @@ in
       environment = guixEnv;
       script = ''
         if [ ! -x "$DAEMON" ]; then
-          DAEMON="${cfg.package}/bin/guix-daemon"
+          DAEMON="${package}/bin/guix-daemon"
           GUIX_LOCPATH="${pkgs.glibcLocales}/lib/locale"
         fi
 
@@ -183,8 +183,8 @@ in
     };
 
     system.activationScripts.guix = ''
-      ${cfg.package}/bin/guix archive --authorize < \
-        ${cfg.package}/share/guix/ci.guix.gnu.org.pub
+      ${package}/bin/guix archive --authorize < \
+        ${package}/share/guix/ci.guix.gnu.org.pub
     '';
 
     # What Guix profiles export is very similar to Nix profiles so it is
