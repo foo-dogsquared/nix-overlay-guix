@@ -23,6 +23,8 @@ The most useful (and only) modules are for enabling Guix daemon (either with the
 
 Please see link:./flake.nix[`./flake.nix`] for more details.
 
+WARNING: While the flake offers a way to install the binary installation for ease of use, it is deprecated and will be removed in 4 years after Guix v1.4.0 has been released.
+It is recommended to use the modules with Nix-built package instead.
 
 
 
@@ -181,4 +183,5 @@ Or at least document it.
 
 * [x] Create packages for Guix with the binary installation.
 ** [ ] Create the binary installation with various versions just for fun ;p
+       (This aged well considering I'll be deprecating the binary installation now.)
 ** [ ] Make the same with Nix-built Guix with offering the various versions.
