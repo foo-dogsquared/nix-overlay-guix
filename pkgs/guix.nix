@@ -89,15 +89,7 @@ guilePackages.buildGuileModule rec {
   '';
 
   # We will start to look into checking once the dependencies are properly installed.
-  doCheck = true;
-
-  doInstallCheck = true;
-  installCheckPhase = ''
-    runHook $preInstallCheck
-    $out/bin/guix --version > /dev/null
-    $out/bin/guix-daemon --version > /dev/null
-    runHook $postInstallCheck
-  '';
+  #doCheck = true;
 
   meta = with lib; {
     description =
