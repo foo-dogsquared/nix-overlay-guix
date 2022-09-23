@@ -20,6 +20,14 @@ let
         value = user;
       })
       (builtins.genList guixBuildUser numberOfUsers));
+
+  # The usual list of profiles being used for the best way of integrating
+  # Guix-built applications throughout the NixOS system.
+  guixProfiles = [
+    "$HOME/.config/guix/current"
+    "$HOME/.guix-profile"
+    "/var/guix/profiles/per-user/root/current-guix"
+  ];
 in
 {
   options.services.guix-binary = with lib; {
@@ -165,10 +173,22 @@ in
       # guix archive --authorize < ~root/.config/guix/current/share/guix/bordeaux.guix.gnu.org.pub
     '';
 
-    environment.profiles = lib.mkBefore [
-      "$HOME/.config/guix/current"
-      "$HOME/.guix-profile"
-      "/var/guix/profiles/per-user/root/current-guix"
-    ];
+    # GUIX_LOCPATH is basically LOCPATH but for Guix libc which in turn used by
+    # virtually every Guix-built packages. This is so that Guix-installed
+    # applications wouldn't use incompatible locale data and not touch its host
+    # system.
+    #
+    # Since it is mainly used by Guix-built packages, we'll have to avoid
+    # setting this variable to point to Nix-built locale data.
+    environment.variables.GUIX_LOCPATH = let
+      localePath = "lib/locale";
+      addLocalePath = paths: lib.lists.map (path: "${path}/${localePath}") paths;
+    in addLocalePath guixProfiles;
+
+    # What Guix profiles export is very similar to Nix profiles so it is
+    # acceptable to list it here. Also, it is more likely that the user would
+    # want to use packages explicitly installed from Guix so we're putting it
+    # first.
+    environment.profiles = lib.mkBefore guixProfiles;
   };
 }
