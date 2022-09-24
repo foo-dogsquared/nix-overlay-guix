@@ -31,6 +31,7 @@ let
       guile-lzma = callPackage ./guile-lzma { };
       guile-semver = callPackage ./guile-semver { };
       guile-sqlite3 = callPackage ./guile-sqlite3 { };
+      guile-quickcheck = callPackage ./guile-quickcheck { };
       guile-ssh = callPackage ./guile-ssh { };
       guile-zlib = callPackage ./guile-zlib { };
       guile-zstd = callPackage ./guile-zstd { };
