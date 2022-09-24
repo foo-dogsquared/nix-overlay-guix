@@ -23,7 +23,7 @@ let
       (builtins.genList guixBuildUser numberOfUsers));
 
   guixEnv = rec {
-    ROOT_PROFILE = "${cfg.stateDir}/profiles/per-user/root/current-guix";
+    ROOT_PROFILE = "${cfg.stateDir}/guix/profiles/per-user/root/current-guix";
     DAEMON = "${ROOT_PROFILE}/bin/guix-daemon";
     GUIX_LOCPATH = "${ROOT_PROFILE}/lib/locale";
     LC_ALL = "en_US.utf8";
