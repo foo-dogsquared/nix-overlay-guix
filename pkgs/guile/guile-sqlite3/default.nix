@@ -18,7 +18,7 @@ buildGuileModule rec {
   meta = with lib; {
     description = "Bindings to Sqlite3 for GNU Guile";
     homepage = "https://notabug.org/guile-sqlite3/guile-sqlite3";
-    license = licenses.gpl3;
+    license = licenses.gpl3Plus;
     maintainers = with maintainers; [ foo-dogsquared ];
   };
 }

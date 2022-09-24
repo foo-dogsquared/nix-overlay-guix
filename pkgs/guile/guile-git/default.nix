@@ -33,7 +33,11 @@ buildGuileModule rec {
   meta = with lib; {
     description = "Bindings to Libgit2 for GNU Guile";
     homepage = "https://gitlab.com/guile-git/guile-git";
-    license = licenses.gpl3;
+
+    # It's a mixed bag of modules licensed under different licenses. You'll
+    # have to refer to individual modules to see the exact details.
+    license = with licenses; [ gpl3Plus lgpl3Plus publicDomain ];
+
     maintainers = with maintainers; [ foo-dogsquared ];
   };
 }

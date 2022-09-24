@@ -17,7 +17,7 @@ buildGuileModule rec {
   meta = with lib; {
     description = "Bindings to Libgcrypt for GNU Guile";
     homepage = "https://notabug.org/cwebber/guile-gcrypt";
-    license = licenses.gpl3;
+    license = licenses.gpl3Plus;
     maintainers = with maintainers; [ foo-dogsquared ];
   };
 }

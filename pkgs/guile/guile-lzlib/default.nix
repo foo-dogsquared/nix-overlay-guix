@@ -27,7 +27,7 @@ buildGuileModule rec {
     description =
       "Guile-lzlib is a GNU Guile library providing bindings to lzlib";
     homepage = "https://notabug.org/guile-lzlib/guile-lzlib";
-    license = licenses.gpl3;
+    license = licenses.gpl3Plus;
     maintainers = with maintainers; [ foo-dogsquared ];
   };
 }

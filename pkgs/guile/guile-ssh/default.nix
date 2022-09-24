@@ -38,7 +38,7 @@ buildGuileModule rec {
   meta = with lib; {
     description = "Bindings to Libssh for GNU Guile";
     homepage = "https://github.com/artyom-poptsov/guile-ssh";
-    license = licenses.gpl3;
+    license = licenses.gpl3Plus;
     maintainers = with maintainers; [ foo-dogsquared ];
   };
 }

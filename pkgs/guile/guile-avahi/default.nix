@@ -16,7 +16,7 @@ buildGuileModule rec {
   meta = with lib; {
     description = "Bindings to Avahi for GNU Guile";
     homepage = "https://www.nongnu.org/guile-avahi/";
-    license = licenses.gpl3;
+    license = licenses.gpl3Plus;
     maintainers = with maintainers; [ foo-dogsquared ];
   };
 }
