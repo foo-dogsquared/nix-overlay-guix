@@ -1,4 +1,4 @@
-{ lib, buildGuileModule, fetchurl, lzma, pkg-config, bytestructures }:
+{ lib, buildGuileModule, fetchurl, xz, pkg-config, bytestructures }:
 
 buildGuileModule rec {
   pname = "guile-lzma";
@@ -15,7 +15,7 @@ buildGuileModule rec {
     bytestructures
   ];
 
-  propagatedBuildInputs = [ lzma ];
+  propagatedBuildInputs = [ xz ];
 
   meta = with lib; {
     homepage = "https://ngyro.com/software/guile-lzma.html";
