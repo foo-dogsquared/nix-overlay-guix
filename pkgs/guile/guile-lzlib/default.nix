@@ -3,7 +3,7 @@
 , fetchurl
 , libgcrypt
 , autoreconfHook
-, pkgconfig
+, pkg-config
 , texinfo
 , lzlib
 }:
@@ -17,7 +17,7 @@ buildGuileModule rec {
     sha256 = "sha256-hiPbd9RH57n/v8vCiDkOcGprGomxFx2u1gh0z+x+T4c=";
   };
 
-  nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
+  nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
   propagatedBuildInputs = [ lzlib ];
 
   makeFlags = [ "GUILE_AUTO_COMPILE=0" ];

@@ -3,7 +3,7 @@
 , fetchurl
 , libgcrypt
 , autoreconfHook
-, pkgconfig
+, pkg-config
 , texinfo
 , zstd
 }:
@@ -17,7 +17,7 @@ buildGuileModule rec {
     sha256 = "sha256-blfvUk8gyrecpf1iNmxUNfcc9lL1gvwefWJYXpDUmcU=";
   };
 
-  nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
+  nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
   propagatedBuildInputs = [ zstd ];
   doCheck = true;
   makeFlags = [ "GUILE_AUTO_COMPILE=0" ];

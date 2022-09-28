@@ -1,4 +1,4 @@
-{ buildGuileModule, lib, fetchgit, avahi, gmp, autoreconfHook, pkgconfig, texinfo }:
+{ buildGuileModule, lib, fetchgit, avahi, gmp, autoreconfHook, pkg-config, texinfo }:
 
 buildGuileModule rec {
   pname = "guile-avahi";
@@ -10,7 +10,7 @@ buildGuileModule rec {
     sha256 = "sha256-qQbPmcVdafqhRntdEJvaPr2r4eyjQYBCOGx7ITpyeTs=";
   };
 
-  nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
+  nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
   propagatedBuildInputs = [ avahi gmp ];
 
   meta = with lib; {

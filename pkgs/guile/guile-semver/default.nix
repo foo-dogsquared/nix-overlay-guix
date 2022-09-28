@@ -1,4 +1,4 @@
-{ buildGuileModule, lib, fetchurl, guile_3_0, libgcrypt, autoreconfHook, pkgconfig, texinfo }:
+{ buildGuileModule, lib, fetchurl, guile_3_0, libgcrypt, autoreconfHook, pkg-config, texinfo }:
 
 buildGuileModule rec {
   pname = "guile-semver";
@@ -9,7 +9,7 @@ buildGuileModule rec {
     sha256 = "sha256-T3kJGTdf6yBKjqLtqSopHZu03kyOscZ3Z4RYmoYlN4E=";
   };
 
-  nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
+  nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
   doCheck = true;
 
   meta = with lib; {

@@ -1,4 +1,4 @@
-{ buildGuileModule, lib, fetchurl, libgcrypt, autoreconfHook, pkgconfig, texinfo }:
+{ buildGuileModule, lib, fetchurl, libgcrypt, autoreconfHook, pkg-config, texinfo }:
 
 buildGuileModule rec {
   pname = "guile-gcrypt";
@@ -9,7 +9,7 @@ buildGuileModule rec {
     sha256 = "sha256-BzlMPeTzGjbKK2cOGZjFJt6JHZQ28S6U2IYqsIEnTWo=";
   };
 
-  nativeBuildInputs = [ autoreconfHook pkgconfig texinfo ];
+  nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
   propagatedBuildInputs = [ libgcrypt ];
   doCheck = true;
   makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
