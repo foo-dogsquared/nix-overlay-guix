@@ -202,10 +202,7 @@ in
     #
     # Since it is mainly used by Guix-built packages, we'll have to avoid
     # setting this variable to point to Nix-built locale data.
-    environment.variables.GUIX_LOCPATH = let
-      localePath = "lib/locale";
-      addLocalePath = paths: lib.lists.map (path: "${path}/${localePath}") paths;
-    in addLocalePath guixProfiles;
+    environment.variables.GUIX_LOCPATH = lib.makeSearchPath "lib/locale" guixProfiles;
 
     # What Guix profiles export is very similar to Nix profiles so it is
     # acceptable to list it here. Also, it is more likely that the user would
