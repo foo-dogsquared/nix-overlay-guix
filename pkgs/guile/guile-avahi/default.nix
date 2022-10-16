@@ -13,6 +13,9 @@ buildGuileModule rec {
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
   propagatedBuildInputs = [ avahi gmp ];
 
+  doCheck = true;
+  makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
+
   meta = with lib; {
     description = "Bindings to Avahi for GNU Guile";
     homepage = "https://www.nongnu.org/guile-avahi/";
