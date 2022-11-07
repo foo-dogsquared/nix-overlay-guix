@@ -17,22 +17,7 @@
     {
       overlays = {
         default = final: prev:
-          let guilePackages = prev.callPackages ./pkgs/guile { };
-          in
-          rec {
-            inherit (guilePackages)
-              disarchive
-              guile-gnutls guile-gcrypt guile-git guile-json guile-sqlite3
-              guile-lzlib guile-zlib guile-ssh guile-zstd guile-semver
-              guile-lzma guile-avahi guile3-lib guile-quickcheck;
-            scheme-bytestructures = guilePackages.bytestructures;
-
-            # Guix that comes in all flavors.
-            guix = prev.callPackage ./pkgs/guix.nix { inherit guilePackages; };
-            guix_binary_1_3_0 = lib.warn
-              binaryInstallationDeprecationMsg
-              prev.callPackage ./pkgs/guix-binary/default.nix { };
-          };
+          import ./pkgs { pkgs = prev; };
       };
 
       packages = forAllSystems (system:

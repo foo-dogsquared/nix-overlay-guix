@@ -1,5 +1,23 @@
 { lib
-, guilePackages
+, buildGuileModule
+
+# !!! Why disarchive can't build?
+#, disarchive
+, guile-lzma
+, scheme-bytestructures
+, guile-avahi
+, guile-gcrypt
+, guile-git
+, guile-gnutls
+, guile-json
+, guile-lzlib
+, guile-semver
+, guile-sqlite3
+, guile-ssh
+, guile-zlib
+, guile-zstd
+, guile3-lib
+
 , fetchgit
 , pkg-config
 , makeWrapper
@@ -22,7 +40,7 @@
 let
   rev = "59ee837d8b11d7d688045b601e8b240ccbdbe7c7";
 in
-guilePackages.buildGuileModule rec {
+buildGuileModule rec {
   pname = "guix";
   version = "unstable-2022-08-22";
 
@@ -36,11 +54,10 @@ guilePackages.buildGuileModule rec {
     ./bootstrap
   '';
 
-  propagatedBuildInputs = with guilePackages; [
-    # !!! Why disarchive can't build?
+  propagatedBuildInputs = [
     #disarchive
     guile-lzma
-    bytestructures
+    scheme-bytestructures
     guile-avahi
     guile-gcrypt
     guile-git
