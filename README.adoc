@@ -31,6 +31,13 @@ It is recommended to use the modules with Nix-built package instead.
 
 == Getting started
 
+[WARNING]
+====
+While the Guix package is usable, it isn't fully functional with some missing dependencies and no proper testing so expect some bugs to pop up.
+It just so happens to be usable with the most basic use cases (e.g., installing and upgrading packages, managing Guix installation).
+I haven't used Guix to its full capabilities so if you use Guix extensively, please file an issue.
+====
+
 Some prerequisites:
 
 * You need NixOS installed, of course.
