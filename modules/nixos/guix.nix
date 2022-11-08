@@ -30,7 +30,8 @@ let
   };
 
   # The usual list of profiles being used for the best way of integrating
-  # Guix-built applications throughout the NixOS system.
+  # Guix-built applications throughout the NixOS system. Take note it is sorted
+  # starting with the profile with the most precedence.
   guixProfiles = [
     "$HOME/.config/guix/current"
     "$HOME/.guix-profile"
@@ -141,9 +142,14 @@ in
   config = lib.mkIf cfg.enable {
     environment.systemPackages = [ package ];
 
+    # Building the user pool for Guix.
     users.users = guixBuildUsers 10;
     users.groups."${cfg.group}" = { };
 
+    # From this point, the script for services involving activating the Guix
+    # daemon will more likely use the daemon from the Guix root profile which
+    # is present after doing an update (i.e., 'guix pull'). Otherwise, we'll
+    # just use the daemon from the derivation.
     systemd.services.guix-daemon = {
       description = "Build daemon for GNU Guix";
       environment = guixEnv;
@@ -190,6 +196,9 @@ in
       wantedBy = [ "multi-user.target" ];
     };
 
+    # Make transferring files from one store to another easier with the usual
+    # case being most of them are more likely from the official Guix CI
+    # instance.
     system.activationScripts.guix = ''
       ${package}/bin/guix archive --authorize < \
         ${package}/share/guix/ci.guix.gnu.org.pub

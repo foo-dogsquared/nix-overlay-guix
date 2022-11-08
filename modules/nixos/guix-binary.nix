@@ -22,7 +22,8 @@ let
       (builtins.genList guixBuildUser numberOfUsers));
 
   # The usual list of profiles being used for the best way of integrating
-  # Guix-built applications throughout the NixOS system.
+  # Guix-built applications throughout the NixOS system. Take note it is sorted
+  # starting with the profile with the most precedence.
   guixProfiles = [
     "$HOME/.config/guix/current"
     "$HOME/.guix-profile"
@@ -98,10 +99,12 @@ in
   config = lib.mkIf (cfg.enable) {
     environment.systemPackages = [ cfg.package ];
 
+    # Building the user pool for Guix.
     users.users = guixBuildUsers 10;
     users.groups = { "${cfg.group}" = { }; };
 
-    # /root/.config/guix/current/lib/systemd/system/guix-daemon.service
+    # The package activation script will copy parts of the binary installation
+    # to its root profile folder so we'll use the root profile.
     systemd.services.guix-daemon = {
       enable = true;
       description = "Build daemon for GNU Guix";
@@ -180,10 +183,7 @@ in
     #
     # Since it is mainly used by Guix-built packages, we'll have to avoid
     # setting this variable to point to Nix-built locale data.
-    environment.variables.GUIX_LOCPATH = let
-      localePath = "lib/locale";
-      addLocalePath = paths: lib.lists.map (path: "${path}/${localePath}") paths;
-    in addLocalePath guixProfiles;
+    environment.variables.GUIX_LOCPATH = lib.makeSearchPath "lib/locale" guixProfiles;
 
     # What Guix profiles export is very similar to Nix profiles so it is
     # acceptable to list it here. Also, it is more likely that the user would
