@@ -38,16 +38,16 @@
 }:
 
 let
-  rev = "59ee837d8b11d7d688045b601e8b240ccbdbe7c7";
+  rev = "987a11bc44b9b18ae02dbece01c4af8ec3e10738";
 in
 buildGuileModule rec {
   pname = "guix";
-  version = "unstable-2022-08-22";
+  version = "1.4.0";
 
   src = fetchgit {
     inherit rev;
     url = "https://git.savannah.gnu.org/git/guix.git";
-    sha256 = "sha256-P2VLyfE+Ft+HwCnJR6eVROgHYwlLEvHMW0ME5o2KNY0=";
+    sha256 = "sha256-tIFU2h4R6Nsyn6fMygYi6GYXWza4vFTLYTTdJfiNVRA=";
   };
 
   preAutoreconf = ''
