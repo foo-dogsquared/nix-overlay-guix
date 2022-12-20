@@ -2,11 +2,11 @@
 
 buildGuileModule rec {
   pname = "guile-gcrypt";
-  version = "0.3.0";
+  version = "0.4.0";
 
   src = fetchurl {
     url = "https://notabug.org/cwebber/${pname}/archive/v${version}.tar.gz";
-    sha256 = "sha256-BzlMPeTzGjbKK2cOGZjFJt6JHZQ28S6U2IYqsIEnTWo=";
+    sha256 = "sha256-NfBoHgHe+rCqoqgyJ8C+g2sKEwPdH3J5SXp23RJVsX4=";
   };
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
