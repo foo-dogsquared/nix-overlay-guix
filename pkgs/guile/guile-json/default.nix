@@ -2,11 +2,11 @@
 
 buildGuileModule rec {
   pname = "guile-json";
-  version = "4.5.2";
+  version = "4.7.3";
 
   src = fetchurl {
     url = "mirror://savannah/guile-json/${pname}-${version}.tar.gz";
-    sha256 = "sha256-GrBG7DaxxEwEGsJ1Vo2Bh4TXH6uaXZX5Eoz+iiUFGTM=";
+    sha256 = "sha256-OLoEjtKdEvBbMsWy+3pReVxEi0HkA6Kxty/wA1gX84g=";
   };
 
   nativeBuildInputs = [ pkg-config texinfo ];
