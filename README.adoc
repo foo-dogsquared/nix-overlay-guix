@@ -140,6 +140,15 @@ Now, import the NixOS module and enable the imported service.
 ----
 
 
+=== Post-installation
+
+You might want to do these things after installation:
+
+- Follow the link:https://guix.gnu.org/manual/en/html_node/Application-Setup.html[Application Setup guide from the Guix manual] more specifically on locales (i.e., `guix install glib-locales`).
+This is to ensure Guix-managed applications use the appropriate locale data.
+However, you don't need to setup `GUIX_LOCPATH` environment variable as the module already does this.
+
+
 
 
 == Development guidelines
