@@ -2,11 +2,11 @@
 
 buildGuileModule rec {
   pname = "disarchive";
-  version = "0.4.0";
+  version = "0.5.0";
 
   src = fetchurl {
     url = "https://files.ngyro.com/disarchive/disarchive-${version}.tar.gz";
-    sha256 = "sha256-GllADhZH0cRPC7nXIjdZ2WwdbY7Q98EvQ913fTVDFN8=";
+    sha256 = "sha256-Agt7v5HTpaskXuYmMdGDRIolaqCHUpwd/CfbZCe9Ups=";
   };
 
   nativeBuildInputs = [ pkg-config ];
