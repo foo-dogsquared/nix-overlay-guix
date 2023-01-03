@@ -196,6 +196,19 @@ in
       wantedBy = [ "multi-user.target" ];
     };
 
+    # This is based from Nix daemon socket unit from upstream Nix
+    # package.
+    systemd.sockets.guix-daemon = {
+      description = "Guix daemon socket";
+      before = [ "multi-user.target" ];
+      listenStreams = [ "${cfg.stateDir}/guix/daemon-socket/socket" ];
+      unitConfig = {
+        RequiresMountsFor = cfg.storeDir;
+        ConditionPathIsReadWrite = "${cfg.stateDir}/guix/daemon-socket";
+      };
+      wantedBy = [ "socket.target" ];
+    };
+
     # Make transferring files from one store to another easier with the usual
     # case being most of them are more likely from the official Guix CI
     # instance.
