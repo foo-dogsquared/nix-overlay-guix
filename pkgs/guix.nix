@@ -38,16 +38,16 @@
 }:
 
 let
-  rev = "987a11bc44b9b18ae02dbece01c4af8ec3e10738";
+  rev = "4dfdd822102690b5687acf28365ab707b68d9476";
 in
 stdenv.mkDerivation rec {
   pname = "guix";
-  version = "1.4.0";
+  version = "1.4.0-${lib.strings.substring 0 6 rev}";
 
   src = fetchgit {
     inherit rev;
     url = "https://git.savannah.gnu.org/git/guix.git";
-    sha256 = "sha256-tIFU2h4R6Nsyn6fMygYi6GYXWza4vFTLYTTdJfiNVRA=";
+    hash = "sha256-nRHdHqApTyysm6WFMffPAQhOQBZzoBpU3TieTMV/Qdw=";
   };
 
   preAutoreconf = ''
