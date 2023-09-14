@@ -1,6 +1,14 @@
-{ buildGuileModule, lib, fetchurl, guile_3_0, libgcrypt, autoreconfHook, pkg-config, texinfo }:
+{ stdenv
+, lib
+, fetchurl
+, libgcrypt
+, autoreconfHook
+, pkg-config
+, texinfo
+, guile
+}:
 
-buildGuileModule rec {
+stdenv.mkDerivation rec {
   pname = "guile-semver";
   version = "0.1.1";
 
@@ -10,6 +18,8 @@ buildGuileModule rec {
   };
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
+  buildInputs = [ guile ];
+
   doCheck = true;
 
   meta = with lib; {

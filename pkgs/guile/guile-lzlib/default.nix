@@ -1,14 +1,15 @@
-{ buildGuileModule
+{ stdenv
 , lib
 , fetchurl
 , libgcrypt
 , autoreconfHook
 , pkg-config
 , texinfo
+, guile
 , lzlib
 }:
 
-buildGuileModule rec {
+stdenv.mkDerivation rec {
   pname = "guile-lzlib";
   version = "0.0.2";
 
@@ -18,6 +19,7 @@ buildGuileModule rec {
   };
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
+  buildInputs = [ guile ];
   propagatedBuildInputs = [ lzlib ];
 
   makeFlags = [ "GUILE_AUTO_COMPILE=0" ];

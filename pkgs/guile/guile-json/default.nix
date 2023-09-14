@@ -1,6 +1,12 @@
-{ buildGuileModule, lib, fetchurl, texinfo, pkg-config }:
+{ stdenv
+, lib
+, fetchurl
+, texinfo
+, pkg-config
+, guile
+}:
 
-buildGuileModule rec {
+stdenv.mkDerivation rec {
   pname = "guile-json";
   version = "4.7.3";
 
@@ -10,8 +16,10 @@ buildGuileModule rec {
   };
 
   nativeBuildInputs = [ pkg-config texinfo ];
-  doCheck = true;
+  buildInputs = [ guile ];
   makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
+
+  doCheck = true;
 
   meta = with lib; {
     description = "JSON Bindings for GNU Guile";

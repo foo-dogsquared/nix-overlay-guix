@@ -1,6 +1,13 @@
-{ lib, buildGuileModule, fetchurl, xz, pkg-config, bytestructures }:
+{ stdenv
+, lib
+, fetchurl
+, xz
+, pkg-config
+, guile
+, bytestructures
+}:
 
-buildGuileModule rec {
+stdenv.mkDerivation rec {
   pname = "guile-lzma";
   version = "0.1.1";
 
@@ -9,13 +16,14 @@ buildGuileModule rec {
     sha256 = "sha256-K4ZoltZy7U05AI9LUzZ1DXiXVgoGZ4Nl9cWnK9L8zl4=";
   };
 
-  doCheck = true;
   nativeBuildInputs = [
     pkg-config
     bytestructures
   ];
-
+  buildInputs = [ guile ];
   propagatedBuildInputs = [ xz ];
+
+  doCheck = true;
 
   meta = with lib; {
     homepage = "https://ngyro.com/software/guile-lzma.html";

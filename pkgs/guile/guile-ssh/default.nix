@@ -1,15 +1,16 @@
-{ buildGuileModule
+{ stdenv
 , lib
 , fetchFromGitHub
 , fetchpatch
 , libssh
 , autoreconfHook
 , pkg-config
+, guile
 , texinfo
 , which
 }:
 
-buildGuileModule rec {
+stdenv.mkDerivation rec {
   pname = "guile-ssh";
   version = "0.16.2";
 
@@ -21,6 +22,7 @@ buildGuileModule rec {
   };
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo which ];
+  buildInputs = [ guile ];
   propagatedBuildInputs = [ libssh ];
   patches = [
     (fetchpatch {

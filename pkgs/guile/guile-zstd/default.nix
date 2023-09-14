@@ -1,14 +1,15 @@
-{ buildGuileModule
+{ stdenv
 , lib
 , fetchurl
 , libgcrypt
 , autoreconfHook
 , pkg-config
+, guile
 , texinfo
 , zstd
 }:
 
-buildGuileModule rec {
+stdenv.mkDerivation rec {
   pname = "guile-zstd";
   version = "0.1.1";
 
@@ -18,9 +19,11 @@ buildGuileModule rec {
   };
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
+  buildInputs = [ guile ];
   propagatedBuildInputs = [ zstd ];
-  doCheck = true;
   makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
+
+  doCheck = true;
 
   meta = with lib; {
     description =

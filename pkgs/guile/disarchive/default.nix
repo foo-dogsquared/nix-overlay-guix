@@ -1,22 +1,28 @@
-{ buildGuileModule, lib, fetchurl, xz, gnutar, gzip, guile-gcrypt, guile-lzma, pkg-config, zlib }:
+{ stdenv
+, lib
+, fetchurl
+, guile
+, xz
+, gnutar
+, gzip
+, guile-gcrypt
+, guile-lzma
+, pkg-config
+, zlib
+}:
 
-buildGuileModule rec {
-  pname = "disarchive";
+stdenv.mkDerivation rec {
+  pname = "guile-disarchive";
   version = "0.5.0";
 
   src = fetchurl {
     url = "https://files.ngyro.com/disarchive/disarchive-${version}.tar.gz";
-    sha256 = "sha256-Agt7v5HTpaskXuYmMdGDRIolaqCHUpwd/CfbZCe9Ups=";
+    hash = "sha256-Agt7v5HTpaskXuYmMdGDRIolaqCHUpwd/CfbZCe9Ups=";
   };
 
   nativeBuildInputs = [ pkg-config ];
-  buildInputs = [ zlib ];
+  buildInputs = [ guile zlib guile-gcrypt guile-lzma ];
   runtimeDependencies = [ xz gnutar gzip ];
-
-  propagatedBuildInputs = [
-    guile-gcrypt
-    guile-lzma
-  ];
 
   meta = with lib; {
     description = "Disassemble software into data and metadata";

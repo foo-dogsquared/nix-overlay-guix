@@ -1,6 +1,15 @@
-{ buildGuileModule, lib, fetchgit, avahi, gmp, autoreconfHook, pkg-config, texinfo }:
+{ stdenv
+, lib
+, fetchgit
+, avahi
+, gmp
+, autoreconfHook
+, pkg-config
+, texinfo
+, guile
+}:
 
-buildGuileModule rec {
+stdenv.mkDerivation rec {
   pname = "guile-avahi";
   version = "0.4-6d43ca";
 
@@ -11,6 +20,7 @@ buildGuileModule rec {
   };
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
+  buildInputs = [ guile ];
   propagatedBuildInputs = [ avahi gmp ];
 
   doCheck = true;

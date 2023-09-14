@@ -1,5 +1,5 @@
-{ lib
-, buildGuileModule
+{ stdenv
+, lib
 
 # !!! Why disarchive can't build?
 #, disarchive
@@ -16,7 +16,7 @@
 , guile-ssh
 , guile-zlib
 , guile-zstd
-, guile3-lib
+, guile-lib
 
 , fetchgit
 , pkg-config
@@ -40,7 +40,7 @@
 let
   rev = "987a11bc44b9b18ae02dbece01c4af8ec3e10738";
 in
-buildGuileModule rec {
+stdenv.mkDerivation rec {
   pname = "guix";
   version = "1.4.0";
 
@@ -69,10 +69,10 @@ buildGuileModule rec {
     guile-ssh
     guile-zlib
     guile-zstd
-    guile3-lib
   ] ++ [
     gzip
     bzip2
+    guile-lib
   ];
 
   nativeBuildInputs = [

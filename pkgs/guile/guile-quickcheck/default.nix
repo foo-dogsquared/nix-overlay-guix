@@ -1,6 +1,11 @@
-{ buildGuileModule, lib, fetchurl, pkg-config }:
+{ stdenv
+, lib
+, fetchurl
+, pkg-config
+, guile
+}:
 
-buildGuileModule rec {
+stdenv.mkDerivation rec {
   pname = "guile-quickcheck";
   version = "0.1.0";
 
@@ -10,6 +15,7 @@ buildGuileModule rec {
   };
 
   nativeBuildInputs = [ pkg-config ];
+  buildInputs = [ guile ];
 
   meta = with lib; {
     homepage = "https://ngyro.com/software/guile-quickcheck.html";

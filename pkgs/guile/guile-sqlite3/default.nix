@@ -1,6 +1,14 @@
-{ buildGuileModule, lib, fetchurl, sqlite, autoreconfHook, pkg-config, texinfo }:
+{ stdenv
+, lib
+, fetchurl
+, sqlite
+, autoreconfHook
+, pkg-config
+, texinfo
+, guile
+}:
 
-buildGuileModule rec {
+stdenv.mkDerivation rec {
   pname = "guile-sqlite3";
   version = "0.1.3";
 
@@ -11,9 +19,11 @@ buildGuileModule rec {
   };
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
+  buildInputs = [ guile ];
   propagatedBuildInputs = [ sqlite ];
-  doCheck = true;
   makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
+
+  doCheck = true;
 
   meta = with lib; {
     description = "Bindings to Sqlite3 for GNU Guile";

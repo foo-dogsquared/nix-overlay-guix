@@ -1,4 +1,4 @@
-{ buildGuileModule
+{ stdenv
 , lib
 , fetchFromGitLab
 , libgit2
@@ -6,9 +6,10 @@
 , autoreconfHook
 , pkg-config
 , texinfo
+, guile
 }:
 
-buildGuileModule rec {
+stdenv.mkDerivation rec {
   pname = "guile-git";
   version = "0.5.2";
 
@@ -19,9 +20,11 @@ buildGuileModule rec {
     sha256 = "sha256-x6apF9fmwzrkyzAexKjClOTFrbE31+fVhSLyFZkKRYU=";
   };
 
-  doCheck = true;
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
+  buildInputs = [ guile ];
   propagatedBuildInputs = [ libgit2 bytestructures ];
+
+  doCheck = true;
 
   # Skipping proxy tests since it requires network access.
   postPatch = ''

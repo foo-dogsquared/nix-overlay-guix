@@ -1,6 +1,12 @@
-{ lib, buildGuileModule, fetchFromGitHub, autoreconfHook, pkg-config }:
+{ stdenv
+, lib
+, fetchFromGitHub
+, autoreconfHook
+, pkg-config
+, guile
+}:
 
-buildGuileModule rec {
+stdenv.mkDerivation rec {
   pname = "scheme-bytestructures";
   version = "2.0.1";
 
@@ -13,8 +19,10 @@ buildGuileModule rec {
 
   makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
 
-  doCheck = true;
   nativeBuildInputs = [ autoreconfHook pkg-config ];
+  buildInputs = [ guile ];
+
+  doCheck = true;
 
   meta = with lib; {
     description = "Structured access to bytevector contents";

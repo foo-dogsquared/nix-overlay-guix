@@ -1,6 +1,14 @@
-{ buildGuileModule, lib, fetchurl, libgcrypt, autoreconfHook, pkg-config, texinfo }:
+{ stdenv
+, lib
+, fetchurl
+, libgcrypt
+, autoreconfHook
+, pkg-config
+, texinfo
+, guile
+}:
 
-buildGuileModule rec {
+stdenv.mkDerivation rec {
   pname = "guile-gcrypt";
   version = "0.4.0";
 
@@ -10,9 +18,11 @@ buildGuileModule rec {
   };
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
+  buildInputs = [ guile ];
   propagatedBuildInputs = [ libgcrypt ];
-  doCheck = true;
   makeFlags = [ "GUILE_AUTO_COMPILE=0" ];
+
+  doCheck = true;
 
   meta = with lib; {
     description = "Bindings to Libgcrypt for GNU Guile";
