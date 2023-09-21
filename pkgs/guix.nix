@@ -1,10 +1,9 @@
 { stdenv
 , lib
 
-# !!! Why disarchive can't build?
-#, disarchive
 , guile
 , guile-lzma
+, guile-disarchive
 , scheme-bytestructures
 , guile-avahi
 , guile-gcrypt
@@ -57,7 +56,8 @@ stdenv.mkDerivation rec {
   '';
 
   propagatedBuildInputs = [
-    #disarchive
+    # !!! Why disarchive can't build?
+    #guile-disarchive
     guile-lzma
     scheme-bytestructures
     guile-avahi
