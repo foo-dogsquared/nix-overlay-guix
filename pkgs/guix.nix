@@ -32,6 +32,7 @@
 , perlPackages
 , gettext
 , glibcLocales
+, util-linux
 
 , confDir ? "/etc"
 , stateDir ? "/var"
@@ -90,6 +91,10 @@ stdenv.mkDerivation rec {
     locale
     perlPackages.Po4a
     texinfo
+  ];
+
+  checkInputs = [
+    util-linux
   ];
 
   configureFlags = [
