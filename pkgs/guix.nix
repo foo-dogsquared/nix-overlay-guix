@@ -3,6 +3,7 @@
 
 # !!! Why disarchive can't build?
 #, disarchive
+, guile
 , guile-lzma
 , scheme-bytestructures
 , guile-avahi
@@ -69,9 +70,6 @@ stdenv.mkDerivation rec {
     guile-ssh
     guile-zlib
     guile-zstd
-  ] ++ [
-    gzip
-    bzip2
     guile-lib
   ];
 
@@ -84,11 +82,14 @@ stdenv.mkDerivation rec {
   ];
 
   buildInputs = [
-    help2man
     autoconf-archive
-    texinfo
+    bzip2
+    gzip
+    guile
+    help2man
     locale
     perlPackages.Po4a
+    texinfo
   ];
 
   configureFlags = [
