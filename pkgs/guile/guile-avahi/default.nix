@@ -11,12 +11,12 @@
 
 stdenv.mkDerivation rec {
   pname = "guile-avahi";
-  version = "0.4-6d43ca";
+  version = "0.4.1";
 
   src = fetchgit {
     url = "git://git.sv.gnu.org/guile-avahi.git";
-    rev = "6d43caf64f672a9694bf6c98bbf7a734f17a51e8";
-    sha256 = "sha256-qQbPmcVdafqhRntdEJvaPr2r4eyjQYBCOGx7ITpyeTs=";
+    rev = "v${version}";
+    hash = "sha256-Yr+OiqaGv6DgsjxSoc4sAjy4OO/D+Q50vdSTPEeIrV8=";
   };
 
   nativeBuildInputs = [ autoreconfHook pkg-config texinfo ];
@@ -31,6 +31,7 @@ stdenv.mkDerivation rec {
     homepage = "https://www.nongnu.org/guile-avahi/";
     license = licenses.gpl3Plus;
     maintainers = with maintainers; [ foo-dogsquared ];
+    platform = guile.meta.platforms;
   };
 }
 
