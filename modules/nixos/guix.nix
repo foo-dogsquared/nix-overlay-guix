@@ -3,11 +3,10 @@
 let
   cfg = config.services.guix;
 
-  package = cfg.package.override (with cfg; { inherit stateDir storeDir; });
+  package = cfg.package.override { inherit (cfg) stateDir storeDir; };
 
   guixBuildUser = id: {
     group = cfg.group;
-    extraGroups = [ cfg.group ];
     name = "${cfg.userPrefix}${toString id}";
     createHome = false;
     description = "Guix build user ${toString id}";
@@ -40,7 +39,7 @@ let
 in
 {
   options.services.guix = with lib; {
-    enable = mkEnableOption "the Guix daemon service";
+    enable = mkEnableOption "Guix build daemon service";
 
     group = mkOption {
       type = types.str;
@@ -69,12 +68,9 @@ in
       '';
     };
 
-    package = mkOption {
-      type = types.package;
-      default = pkgs.guix;
-      defaultText = "pkgs.guix";
-      description = ''
-        The package containing the Guix daemon and command-line interface.
+    package = mkPackageOption pkgs "guix" {
+      extraDescription = ''
+        It should contain {command}`guix-daemon` and {command}`guix` executable.
       '';
     };
 
@@ -85,11 +81,13 @@ in
       description = ''
         The store directory where the Guix service will serve to/from. Take
         note Guix cannot take advantage of substitutes if you set it other than
-        <literal>/gnu/store</literal> since most of the cached builds are
+        {path}`/gnu/store` since most of the cached builds are
         assumed in there.
 
+        ::: {.warning}
         This will also recompile the package with the specified option so you
-        better have a good reason to do so.
+        better have a good reason to change it.
+        :::
       '';
     };
 
@@ -101,7 +99,9 @@ in
         The state directory where Guix service will store its data such as its
         user-specific profiles, cache, and state files.
 
+        ::: {.warning}
         Changing it other than the default will rebuild the package.
+        :::
       '';
       example = "/gnu/var";
     };
@@ -112,6 +112,7 @@ in
       port = mkOption {
         type = types.port;
         default = 8181;
+        example = 8200;
         description = ''
           Port of the substitute server to listen to.
         '';
@@ -133,7 +134,7 @@ in
         '';
         default = [];
         example = lib.literalExpression ''
-          [ "--compression=zstd:6" "--repl" ]
+          [ "--compression=zstd:6" "--repl" "--discover=no" ]
         '';
       };
     };
