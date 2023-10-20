@@ -21,21 +21,13 @@ let
       })
       (builtins.genList guixBuildUser numberOfUsers));
 
-  guixEnv = rec {
-    ROOT_PROFILE = "${cfg.stateDir}/guix/profiles/per-user/root/current-guix";
-    DAEMON = "${ROOT_PROFILE}/bin/guix-daemon";
-    GUIX = "${ROOT_PROFILE}/bin/guix";
-    GUIX_LOCPATH = "${ROOT_PROFILE}/lib/locale";
-    LC_ALL = "en_US.utf8";
-  };
-
   # The usual list of profiles being used for the best way of integrating
   # Guix-built applications throughout the NixOS system. Take note it is sorted
   # starting with the profile with the most precedence.
   guixProfiles = [
     "$HOME/.config/guix/current"
     "$HOME/.guix-profile"
-    guixEnv.ROOT_PROFILE
+    "${cfg.stateDir}/guix/profiles/per-user/root/current-guix"
   ];
 in
 {
@@ -192,7 +184,7 @@ in
       # is present after doing an update (i.e., 'guix pull'). Otherwise, we'll
       # just use the daemon from the derivation.
       systemd.services.guix-daemon = {
-        environment = guixEnv;
+        environment.LC_ALL = "C.UTF-8";
         script = ''
           ${lib.getExe' package "guix-daemon"} --build-users-group=${cfg.group} ${
             lib.escapeShellArgs cfg.extraArgs
@@ -258,6 +250,7 @@ in
     (lib.mkIf cfg.publish.enable {
       systemd.services.guix-publish = {
         enable = true;
+        environment.LC_ALL = "C.UTF-8";
         script = ''
           ${lib.getExe' package "guix"} publish --user=${cfg.publish.user} --port=${cfg.publish.port} ${
             lib.escapeShellArgs cfg.publish.extraArgs
