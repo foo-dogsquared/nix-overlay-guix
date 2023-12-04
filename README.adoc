@@ -8,6 +8,27 @@ Forked originally from link:https://github.com/Emiller88/guix[Emiller88's Guix o
 
 
 
+== Migrating to nixpkgs' version
+
+As of 2023-12-04, most of the things over here has been upstreamed into nixpkgs including the https://github.com/NixOS/nixpkgs/pull/264331[module].
+This means development will now take place over at nixpkgs and any issues and discussions should be filed over there (be sure to ping me as well).
+I recommend to use nixpkgs' version as it is also actively maintained and has more options (such as `services.guix.gc`) compared to here.
+
+As for this Git repo, it will stay the way it is indefinitely (considering to archive it to make it more obvious).
+
+To get started (if applicable):
+
+* Remove the flake input entirely.
+* Remove the overlay (if you use it) since Guix is available from nixpkgs now.
+* Remove the imported module from this flake.
+* Remove the reference of the package from this flake in `services.guix.package`.
+
+As for the module itself, there should be no changes from the user side.
+Just set `services.guix.enable = true;` somewhere in your NixOS configuration and it's all set.
+
+
+
+
 == What's in the flake?
 
 To quickly show the goods, just run `nix flake show ${FLAKE}`.
